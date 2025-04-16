@@ -7,7 +7,7 @@ const PublicLayout = () => {
     <div className="flex flex-col min-h-screen">
       <NavbarPublic />
 
-      <main className="flex-1 p-4">
+      <main className="flex-1">
         <Outlet /> {/* Aquí carga Home, Login, Registro, etc */}
       </main>
 
