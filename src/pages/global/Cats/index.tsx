@@ -39,8 +39,6 @@ const Cats = () => {
             alt="Gato en adopción"
             className="w-[180px] md:w-[300px] lg:w-[500px] h-auto object-contain"
           />
-
-
         }
       />
       <section className="bg-body  py-10 dark:bg-dark">
@@ -55,7 +53,14 @@ const Cats = () => {
               age="3 meses"
             />
 
-
+            <CatCard
+              id="1"
+              name="Arturito"
+              imageUrl={CatCatalogoOption}
+              location="Lima, Perú"
+              gender="Macho"
+              age="3 meses"
+            />
             <CatCard
               id="1"
               name="Arturito"
@@ -73,8 +78,6 @@ const Cats = () => {
               gender="Macho"
               age="3 meses"
             />
-
-
             <CatCard
               id="1"
               name="Arturito"
@@ -83,16 +86,6 @@ const Cats = () => {
               gender="Macho"
               age="3 meses"
             />
-
-            <CatCard
-              id="1"
-              name="Arturito"
-              imageUrl={CatCatalogoOption}
-              location="Lima, Perú"
-              gender="Macho"
-              age="3 meses"
-            />
-
 
             <CatCard
               id="1"

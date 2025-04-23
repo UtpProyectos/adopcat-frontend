@@ -33,17 +33,13 @@ const CatDetail = () => {
                                 Explora gatos en adopción cerca de ti <br /> y dale un hogar lleno de amor.
                             </p>
 
+                            
                             <div className="flex gap-10">
-                                <AdoptButton 
-                                    label="Adoptame"
-                                     
-                                />
+                                <AdoptButton label="Adoptame" />
 
                                 <AdoptButton
                                     variant="secondary"
-                                    label="Dona Aquí"
-                                     
-                                />
+                                    label="Dona Aquí" />
 
                             </div>
                         </div>
