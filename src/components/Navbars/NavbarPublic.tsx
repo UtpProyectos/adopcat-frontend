@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import iconAdocat from '../../assets/icons/icon-adocat.png'
 import iconAdocatDark from '../../assets/icons/icon-adocat-dark.png'
 import { useTheme } from "../../context/ThemeContext"
+import { useAuth } from "../../context/AuthContext"
 import { Menu, X } from "lucide-react"
+import AdoptButton from "../Buttons/AdoptButton"
+import ThemeButton from "../Buttons/ThemeButton"
 
 const links = [
   { name: "Home", href: "/" },
@@ -16,6 +19,7 @@ const links = [
 
 const NavbarPublic = () => {
   const { theme } = useTheme()
+  const { user, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -60,13 +64,43 @@ const NavbarPublic = () => {
         </nav>
 
         {/* Botones Desktop */}
-        <div className="hidden md:flex items-center gap-8">
-          <NavLink to="/register" className="hover:text-primary font-medium text-sm lg:text-lg">
-            Sign up
-          </NavLink>
-          <NavLink to="/login" className="hover:text-primary font-medium text-sm lg:text-lg">
-            Login
-          </NavLink>
+        <div className="hidden md:flex items-center gap-6">
+          <AdoptButton label="Dona Aquí" variant="secondary" />
+          <ThemeButton/>
+          {user ? (
+            <div className="relative group">
+              <img
+                src={
+                  user.profilePhoto
+                    ? user.profilePhoto
+                    : `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=0D8ABC&color=fff`
+                }
+                alt="Perfil"
+                className="w-9 h-9 rounded-full object-cover cursor-pointer"
+              />
+
+              <div className="absolute right-[-4px] w-40 bg-white dark:bg-dark shadow-md rounded-lg p-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 z-50">
+                <NavLink to="/perfil" className="block px-3 py-2 hover:text-primary">
+                  Ver perfil
+                </NavLink>
+                <button
+                  onClick={logout}
+                  className="block px-3 py-2 text-left w-full hover:text-red-500"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <NavLink to="/register" className="hover:text-primary font-medium text-sm lg:text-lg">
+                Sign up
+              </NavLink>
+              <NavLink to="/login" className="hover:text-primary font-medium text-sm lg:text-lg">
+                Login
+              </NavLink>
+            </>
+          )}
         </div>
 
         {/* Botón Hamburguesa */}
@@ -88,10 +122,8 @@ const NavbarPublic = () => {
             transition={{ duration: 0.3 }}
             className="fixed top-0 right-0 h-full w-[80%] max-w-xs bg-body dark:bg-dark z-50 shadow-2xl px-6 py-8 rounded-l-3xl"
           >
-            {/* Botón X para cerrar */}
-
+            {/* Botón X y Logo */}
             <div className="relative flex items-center justify-between mb-8">
-              {/* Logo */}
               <div className="flex items-center gap-2">
                 <img
                   src={theme === 'dark' ? iconAdocatDark : iconAdocat}
@@ -100,8 +132,6 @@ const NavbarPublic = () => {
                 />
                 <span className="font-bold text-lg">AdoCat</span>
               </div>
-
-              {/* Botón cerrar */}
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-black dark:text-white cursor-pointer"
@@ -110,7 +140,7 @@ const NavbarPublic = () => {
               </button>
             </div>
 
-
+            {/* Menú Móvil */}
             <div className="flex flex-col gap-6 mt-10">
               {links.map((link) => (
                 <NavLink
@@ -119,7 +149,7 @@ const NavbarPublic = () => {
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-primary font-bold text-lg "
+                      ? "text-primary font-bold text-lg"
                       : "text-black font-medium dark:text-white text-lg hover:text-primary"
                   }
                 >
@@ -128,16 +158,36 @@ const NavbarPublic = () => {
               ))}
 
               <div className="mt-6 flex flex-col gap-3">
-                <NavLink to="/register" className="hover:text-primary font-medium text-lg">
-                  Sign up
-                </NavLink>
-                <NavLink to="/login" className="hover:text-primary font-medium text-lg">
-                  Login
-                </NavLink>
+                <AdoptButton label="Dona Aquí" variant="secondary" />
+
+                {user ? (
+                  <>
+                    <NavLink to="/perfil" onClick={() => setIsOpen(false)} className="hover:text-primary font-medium text-lg">
+                      Ver perfil
+                    </NavLink>
+                    <button
+                      onClick={() => {
+                        logout()
+                        setIsOpen(false)
+                      }}
+                      className="text-left hover:text-red-500 font-medium text-lg"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <NavLink to="/register" onClick={() => setIsOpen(false)} className="hover:text-primary font-medium text-lg">
+                      Sign up
+                    </NavLink>
+                    <NavLink to="/login" onClick={() => setIsOpen(false)} className="hover:text-primary font-medium text-lg">
+                      Login
+                    </NavLink>
+                  </>
+                )}
               </div>
             </div>
           </motion.aside>
-
         )}
       </AnimatePresence>
     </header>

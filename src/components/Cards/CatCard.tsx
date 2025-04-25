@@ -44,7 +44,8 @@ const CatCard = ({ id, name, imageUrl, location, gender, age }: CatCardProps) =>
         {/* Nombre + Botón */}
         <div className="flex items-center justify-between py-2">
           <span className="font-semibold text-lg">{name}</span>
-          <AdoptButton onClick={() => navigate(`/cats/${id}`)} />
+          <AdoptButton onPress={() => navigate(`/cats/${id}`)} />
+
         </div>
       </div>
     </div>

@@ -15,17 +15,27 @@ const GoogleLoginButton = () => {
 
       // ✅ ahora también guardamos el usuario con rol
       login(res.data.token, res.data.user)
-      navigate("/dashboard")
+      navigate("/")
     } catch (error) {
       console.error("Error al loguearse con Google", error)
     }
   }
 
   return (
-    <GoogleLogin
-      onSuccess={handleGoogleSuccess}
-      onError={() => console.error("Error en login con Google")}
-    />
+    <div className="w-full flex justify-center">
+      <div className="w-full ">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => console.error("Error en login con Google")}
+          theme="outline"              // Estilo claro
+          size="large"                 // Más visible
+          shape="pill"                 // Bordes redondeados
+          text="signin_with"           // Texto suave
+          logo_alignment="left"        // Logo al lado
+          width="100%"                 // Ocupa todo el ancho del contenedor
+        />
+      </div>
+    </div>
   )
 }
 

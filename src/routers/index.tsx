@@ -11,10 +11,12 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         {/* Layout Público */}
+        <Route path="/login" element={<Login />} />
+
+
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/cats" element={<Cats />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/cats" element={<Cats />} /> 
           <Route path="/cats/:id" element={<CatDetail />} />
         </Route>
 

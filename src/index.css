@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@plugin './hero.ts';  
+@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+
+
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-primary: #FD7E14;
+  --color-secondary: #0D4C5D;
+  --color-secondary-hover: #0B3F4D;
   --color-body: #fff; 
   --color-body-500: #fff; 
   --color-dark: #27282C;

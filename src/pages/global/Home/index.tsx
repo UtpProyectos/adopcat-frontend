@@ -2,6 +2,7 @@ import ContainerHeader from "../../../components/Containers/ContainerHeader"
 import CatCatalogo from "../../../assets/cats/cat-catalogo.png" 
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 import { NavLink } from "react-router-dom"; 
+import VerificationAlert from "../../../components/Alerts/VerificationAlert";
 
 const Home = () => {
   return (
@@ -38,6 +39,10 @@ const Home = () => {
 
         }
       />
+
+      <section>
+        <VerificationAlert/>
+      </section>
     </div>
   )
 }

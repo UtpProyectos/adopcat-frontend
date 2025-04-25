@@ -1,3 +1,5 @@
+import { googleLogout } from "@react-oauth/google"
+
 import {
   createContext,
   useContext,
@@ -12,6 +14,8 @@ interface User {
   lastName: string
   email: string
   role: string
+  profilePhoto?: string 
+  verified: boolean
 }
 
 interface AuthContextProps {
@@ -41,6 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const logout = () => {
+    googleLogout()
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     setToken(null)

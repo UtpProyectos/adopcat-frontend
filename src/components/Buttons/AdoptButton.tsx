@@ -1,31 +1,45 @@
-import iconPataCat from '../../assets/icons/icon-patacat.png'
+import { Button } from "@heroui/react"
+import iconPataCat from "../../assets/icons/icon-patacat.png"
 
 type AdoptButtonProps = {
-  onClick?: () => void
-  variant?: 'primary' | 'secondary'
   label?: string
+  isLoading?: boolean
+  variant?: "primary" | "secondary"
+  type?: "button" | "submit" | "reset"
+  onPress?: () => void // ✅ correcto para HeroUI
+  fullWidth?: boolean
+  iconPosition?: "left" | "right"
 }
 
 const AdoptButton = ({
-  onClick,
-  variant = 'primary',
-  label = 'Adóptame'
+  onPress,
+  variant = "primary",
+  label = "Adóptame",
+  isLoading = false,
+  fullWidth = false,
+  iconPosition = "right",
+  type = "button",
 }: AdoptButtonProps) => {
-  const baseClasses = "font-semibold py-2 px-4 rounded-xl text-sm flex items-center gap-2 transition-all duration-200 cursor-pointer"
-
-  const variants = {
-    primary: "bg-primary hover:bg-orange-600 text-white",
-    secondary: "bg-[#0D4C5D] hover:bg-[#0B3F4D] text-white"
-  }
+  const color = variant === "primary" ? "primary" : "secondary"
 
   return (
-    <button
-      onClick={onClick}
-      className={`${baseClasses} ${variants[variant]}`}
+    <Button
+      isLoading={isLoading}
+      color={color}
+      onPress={onPress}
+      type={type}
+      className={`font-semibold text-sm rounded-xl flex items-center gap-2 ${
+        fullWidth ? "w-full justify-center" : ""
+      }`}
     >
+      {iconPosition === "left" && (
+        <img src={iconPataCat} alt="pata" className="w-4 h-4" />
+      )}
       {label}
-      <img src={iconPataCat} alt="icono pata" className="w-4 h-4" />
-    </button>
+      {iconPosition === "right" && (
+        <img src={iconPataCat} alt="pata" className="w-4 h-4" />
+      )}
+    </Button>
   )
 }
 
