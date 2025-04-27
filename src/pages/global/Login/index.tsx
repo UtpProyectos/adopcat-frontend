@@ -3,28 +3,52 @@ import RegisterForm from "../../../auth/RegisterForm"
 import LoginForm from "../../../auth/LoginForm"
 import GoogleLoginButton from "../../../auth/GoogleLoginButton"
 import { useAuth } from "../../../context/AuthContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation, NavLink } from "react-router-dom"
 import catLogin from "../../../assets/cats/cat-catalogo.png"
 import { motion } from "framer-motion"
+import iconAdocat from '../../../assets/icons/icon-adocat.png'
+import iconAdocatDark from '../../../assets/icons/icon-adocat-dark.png'
+import { useTheme } from "../../../context/ThemeContext"
 
 const LoginPage = () => {
+  const { theme } = useTheme()
   const { token } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const fromState = location.state as { register?: boolean }
+
+  const [showRegister, setShowRegister] = useState(false)
 
   useEffect(() => {
     if (token) {
       navigate("/")
     }
-  }, [token, navigate])
 
-  const [showRegister, setShowRegister] = useState(false)
+    if (fromState?.register) {
+      setShowRegister(true)
+      navigate(location.pathname, { replace: true, state: {} }) // ✅ limpia el estado
+    } else if (fromState?.register === false) {
+      setShowRegister(false)
+      navigate(location.pathname, { replace: true, state: {} }) // ✅ limpia el estado
+    }
+  }, [token, navigate, fromState, location.pathname])
 
   const baseClasses =
     "flex flex-col justify-center items-center px-6 py-16 md:p-20 z-10 w-full min-h-screen"
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-body dark:bg-dark relative overflow-hidden">
-      
+      <div className="absolute top-5 left-5 z-40">
+        <NavLink to="/" className="flex items-center gap-2">
+          <img
+            src={theme === "dark" ? iconAdocatDark : iconAdocat}
+            alt="AdoCat"
+            className="w-8 h-8"
+          />
+          <span className="font-bold text-lg">AdoCat</span>
+        </NavLink>
+      </div>
       {/* LOGIN FORM */}
       <div className={`${showRegister ? "hidden md:flex" : "flex"} ${baseClasses}`}>
         <div className="w-full max-w-md space-y-6">
@@ -61,7 +85,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* IMAGEN ANIMADA SOLO EN DESKTOP */}
+      {/* IMAGEN MÓVIL SOLO EN DESKTOP */}
       <motion.div
         animate={{ left: showRegister ? "0%" : "50%" }}
         transition={{ duration: 0.6, ease: "easeInOut" }}

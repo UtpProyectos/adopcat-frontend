@@ -20,7 +20,7 @@ const VerificationAlert = () => {
         </p>
         <button
           onClick={() => navigate("/verificar")}
-          className="text-sm font-semibold text-blue-600 hover:underline"
+          className="text-sm font-semibold text-prymary hover:underline"
         >
           Verificar perfil
         </button>

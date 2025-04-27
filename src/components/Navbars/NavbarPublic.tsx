@@ -66,7 +66,7 @@ const NavbarPublic = () => {
         {/* Botones Desktop */}
         <div className="hidden md:flex items-center gap-6">
           <AdoptButton label="Dona Aquí" variant="secondary" />
-          <ThemeButton/>
+          <ThemeButton />
           {user ? (
             <div className="relative group">
               <img
@@ -93,12 +93,20 @@ const NavbarPublic = () => {
             </div>
           ) : (
             <>
-              <NavLink to="/register" className="hover:text-primary font-medium text-sm lg:text-lg">
+              <NavLink
+                to="/login"
+                state={{ register: true }}
+                className="hover:text-primary font-medium text-sm lg:text-lg" >
                 Sign up
               </NavLink>
-              <NavLink to="/login" className="hover:text-primary font-medium text-sm lg:text-lg">
+
+              <NavLink
+                to="/login"
+                state={{ register: false }}
+                className="hover:text-primary font-medium text-sm lg:text-lg"   >
                 Login
               </NavLink>
+
             </>
           )}
         </div>
