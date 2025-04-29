@@ -9,6 +9,7 @@ type AdoptButtonProps = {
   onPress?: () => void // ✅ correcto para HeroUI
   fullWidth?: boolean
   iconPosition?: "left" | "right"
+  className?: string
 }
 
 const AdoptButton = ({
@@ -19,6 +20,7 @@ const AdoptButton = ({
   fullWidth = false,
   iconPosition = "right",
   type = "button",
+  className = "",
 }: AdoptButtonProps) => {
   const color = variant === "primary" ? "primary" : "secondary"
 
@@ -28,7 +30,7 @@ const AdoptButton = ({
       color={color}
       onPress={onPress}
       type={type}
-      className={`font-semibold text-sm rounded-xl flex items-center gap-2 ${
+      className={`font-semibold text-sm rounded-xl flex items-center gap-2 ${className} ${
         fullWidth ? "w-full justify-center" : ""
       }`}
     >
