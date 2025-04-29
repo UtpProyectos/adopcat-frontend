@@ -14,7 +14,7 @@ const ContainerHeader = ({
 }: ContainerHeaderProps) => {
     return (
 
-        <section className="pt-28 md:pt-0  bg-gray-50 dark:bg-[#212224] " >
+        <section className="bg-gray-50 dark:bg-[#212224] " >
             <div className={`relative w-full ${classP} flex items-stretch`}>
                 {/* Fondo principal como imagen (detrás de todo) */}
                 <img
