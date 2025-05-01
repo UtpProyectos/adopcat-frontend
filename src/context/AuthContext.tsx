@@ -1,5 +1,4 @@
 import { googleLogout } from "@react-oauth/google"
-
 import {
   createContext,
   useContext,
@@ -9,12 +8,12 @@ import {
 } from "react"
 
 interface User {
-  userId: number
+  userId: string
   firstName: string
   lastName: string
   email: string
   role: string
-  profilePhoto?: string 
+  profilePhoto?: string
   verified: boolean
 }
 
@@ -23,28 +22,40 @@ interface AuthContextProps {
   user: User | null
   login: (token: string, user: User) => void
   logout: () => void
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  )
-  const [user, setUser] = useState<User | null>(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user")!)
-      : null
-  )
+  const [token, setToken] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    try {
+      const storedToken = localStorage.getItem("token")
+      const storedUser = localStorage.getItem("user")
+
+      if (storedToken && storedUser) {
+        setToken(storedToken)
+        setUser(JSON.parse(storedUser))
+      }
+    } catch (err) {
+      console.error("❌ Error al leer del localStorage:", err)
+      logout()
+    }
+  }, [])
 
   const login = (newToken: string, newUser: User) => {
     localStorage.setItem("token", newToken)
     localStorage.setItem("user", JSON.stringify(newUser))
     setToken(newToken)
     setUser(newUser)
+    console.log("✅ Login exitoso:", newUser)
   }
 
   const logout = () => {
+    console.warn("🔴 Logout forzado")
     googleLogout()
     localStorage.removeItem("token")
     localStorage.removeItem("user")
@@ -52,21 +63,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null)
   }
 
+  // Sync logout en otras pestañas
   useEffect(() => {
-    const syncLogout = () => {
-      const storedToken = localStorage.getItem("token")
-      const storedUser = localStorage.getItem("user")
-
-      setToken(storedToken)
-      setUser(storedUser ? JSON.parse(storedUser) : null)
+    const syncLogout = (event: StorageEvent) => {
+      if (event.key === "token" && event.newValue === null) {
+        logout()
+      }
     }
-
     window.addEventListener("storage", syncLogout)
     return () => window.removeEventListener("storage", syncLogout)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   )

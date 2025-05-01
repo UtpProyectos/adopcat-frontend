@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import iconAdocat from '../../assets/icons/icon-adocat.png'
@@ -22,8 +22,37 @@ const NavbarPublic = () => {
   const { user, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
 
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 50 || currentScrollY < lastScrollY) {
+        setShowNavbar(true);
+      } else {
+        setShowNavbar(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
+
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 pt-5">
+    // <header className="fixed top-0 left-0 w-full z-50 pt-5">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 pt-5 transition-transform duration-300 ${showNavbar ? "translate-y-0" : "-translate-y-full"
+        }`}
+    >
+
       <div className="container mx-auto py-6 px-10 flex items-center justify-between bg-body dark:bg-dark rounded-4xl shadow-primary">
 
         {/* Logo */}

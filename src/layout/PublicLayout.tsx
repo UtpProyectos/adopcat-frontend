@@ -5,6 +5,7 @@ import NavbarPublic from "../components/Navbars/NavbarPublic"
 const PublicLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      
       <NavbarPublic />
 
       <main className="flex-1 ">
