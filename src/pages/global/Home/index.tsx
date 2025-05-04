@@ -1,11 +1,22 @@
 import ContainerHeader from "../../../components/Containers/ContainerHeader"
 import CatCatalogo from "../../../assets/cats/cat-catalogo.png"
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Alert from "../../../components/Alerts/Alert";
 import { useAuth } from "../../../context/AuthContext";
+import { useEffect } from "react";
+import { addToast } from "@heroui/react";
 
 const Home = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.toast) {
+      addToast(location.state.toast)
+      window.history.replaceState({}, "") // limpia el estado después
+    }
+  }, [location.state])
+
 
   const { user } = useAuth();
   return (

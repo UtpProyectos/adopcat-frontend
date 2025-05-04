@@ -49,7 +49,7 @@ const Profile = () => {
     <div className="container mx-auto flex flex-col items-center gap-8 pt-30">
 
       {/* Perfil */}
-      <section className="flex items-center justify-center gap-6">
+      <section className="flex items-center justify-center gap-6 w-full m-auto max-w-6xl">
         <img
           src={profileImage}
           alt="Foto de perfil"
@@ -60,7 +60,7 @@ const Profile = () => {
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-3xl font-bold md:text-xl">
+                <h1 className="text-xl font-bold md:text-3xl">
                   {user?.firstName || ""} {user?.lastName || ""}
                 </h1>
 

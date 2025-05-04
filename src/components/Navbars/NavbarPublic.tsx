@@ -53,7 +53,7 @@ const NavbarPublic = () => {
         }`}
     >
 
-      <div className="container mx-auto py-6 px-10 flex items-center justify-between bg-body dark:bg-dark rounded-4xl shadow-primary">
+      <div className="container mx-auto py-6 px-10 flex items-center justify-between bg-body dark:bg-dark rounded-4xl shadow-primary dark:shadow-2xl   ">
 
         {/* Logo */}
         <div className="flex items-center gap-2">

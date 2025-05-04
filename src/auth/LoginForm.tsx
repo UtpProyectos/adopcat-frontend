@@ -26,14 +26,8 @@ const LoginForm = () => {
     try {
       const res = await api.post("/auth/login", { email, password })
       login(res.data.token, res.data.user)
-      addToast({
-        title: "Inicio de sesión exitoso",
-        description: "Bienvenido de nuevo.", 
-        timeout: 3000,
-        color: "success",
-        shouldShowTimeoutProgress: true,
-      })  
-      navigate("/dashboard")
+      
+      navigate("/")
     
     } catch (err: any) {
       console.error("Error al iniciar sesión", err) 

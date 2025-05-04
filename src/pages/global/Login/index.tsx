@@ -25,7 +25,18 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/")
+      navigate("/", {
+        state: {
+          toast: {
+            title: "Inicio de sesión exitoso",
+            description: "Bienvenido de nuevo.",
+            timeout: 3000,
+            color: "success",
+            shouldShowTimeoutProgress: true,
+          },
+        },
+      })
+      
     }
 
     if (fromState?.register) {
