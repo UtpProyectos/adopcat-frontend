@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react"
 import {
-  Card, CardBody, Input, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
-  useDisclosure, InputOtp,
+  Input, Button, 
   addToast,
-  CircularProgress
+  CircularProgress,
+  Progress
 } from "@heroui/react"
 import { CheckCircle, XCircle, MailIcon, PhoneIcon, UploadCloud } from "lucide-react"
 import { useAuth } from "../../../../../context/AuthContext"
 import AdoptButton from "../../../../../components/Buttons/AdoptButton"
 import { userService } from "../../../../../services/user"
+import InputPassword from "../../../../../components/Inputs/InputPassword"
+import { validarPassword } from "../../../../../auth/passwordValidator"
+import PhoneVerificationModal from "../Modals/PhoneVerificationModal"
+import EmailVerificationModal from "../Modals/EmailVerificationModal"
 
-interface UserProfile {
-  firstName: string
-  lastName: string
-  dni: string
-  phoneNumber: string
-  address: string
-  dniUrl: string
-  emailVerified: boolean
-  phoneVerified: boolean
-  adminApproved: boolean
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phoneNumber: string;
+  address: string;
+  dniUrl: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  adminApproved: boolean;
 }
+
 
 const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => void }) => {
 
@@ -29,13 +34,17 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [dniFile, setDniFile] = useState<File | null>(null)
 
-  const emailModal = useDisclosure()
-  const phoneModal = useDisclosure()
-  const [otpValue, setOtpValue] = useState("")
-  const [savedPhone, setSavedPhone] = useState(false)
- 
-  
+  const [phoneModalOpen, setPhoneModalOpen] = useState(false)
+  const [emailModalOpen, setEmailModalOpen] = useState(false)
 
+  const [currentPassword, setCurrentPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmNewPassword, setConfirmNewPassword] = useState("")
+  const [passwordError, setPasswordError] = useState<string | null>(null)
+  const [changingPassword, setChangingPassword] = useState(false)
+
+  const { score, strengthLabel, suggestions, color } = validarPassword(newPassword)
+ 
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -45,23 +54,30 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
           firstName: data.firstName,
           lastName: data.lastName,
           dni: data.dni,
-          phoneNumber: data.phoneNumber,
+          phoneNumber: data.phoneNumber?.replace("+51", ""),
           address: data.address,
           dniUrl: data.dniUrl,
           emailVerified: data.emailVerified,
           phoneVerified: data.phoneVerified,
           adminApproved: data.adminApproved
         })
-        
-        onProfileLoad(data);
-        setSavedPhone(Boolean(data.phoneNumber))
+        onProfileLoad(data)
       } catch (error) {
         console.error("❌ Error al cargar perfil", error)
       }
     }
-
     fetchProfile()
   }, [])
+
+  const handlePhoneVerified = () => {
+
+    if (profile) setProfile({ ...profile, phoneVerified: true })
+  }
+
+  const handleEmailVerified = () => {
+    if (profile) setProfile({ ...profile, emailVerified: true })
+  }
+  
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,7 +97,7 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
           firstName: profile.firstName,
           lastName: profile.lastName,
           dni: profile.dni,
-          phoneNumber: profile.phoneNumber,
+          phoneNumber: `+51${profile.phoneNumber}`,
           address: profile.address
         })
       } else {
@@ -100,7 +116,7 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
         verified: updatedUser.verified ?? false
       }
 
-      
+
       setUser(minimalUser)
       localStorage.setItem("user", JSON.stringify(minimalUser))
 
@@ -108,7 +124,7 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         dni: updatedUser.dni,
-        phoneNumber: updatedUser.phoneNumber,
+        phoneNumber: updatedUser.phoneNumber.replace("+51", ""),
         address: updatedUser.address,
         dniUrl: updatedUser.dniUrl,
         emailVerified: updatedUser.emailVerified,
@@ -138,8 +154,48 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
     }
   }
 
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPasswordError(null)
 
-  if (!profile) return <p className="flex flex-col items-center"><CircularProgress aria-label="Loading..." />Cargando perfil</p>
+    if (newPassword !== confirmNewPassword) {
+      console.log(newPassword, confirmNewPassword)
+      return setPasswordError("Las contraseñas no coinciden.")
+    }
+
+    try {
+      setChangingPassword(true)
+      if (!user) throw new Error("Usuario no autenticado")
+
+      console.log(user)
+      await userService.changePassword(user.userId, currentPassword, newPassword)
+
+      addToast({
+        title: "Contraseña actualizada",
+        description: "Tu contraseña fue cambiada exitosamente.",
+        color: "success",
+        timeout: 3000,
+        shouldShowTimeoutProgress: true,
+      })
+
+      // Limpia los campos
+      setCurrentPassword("")
+      setNewPassword("")
+      setConfirmNewPassword("")
+    } catch (err: any) {
+      setPasswordError(err?.response?.data?.message || "Error al cambiar la contraseña.")
+    } finally {
+      setChangingPassword(false)
+    }
+  }
+
+
+  if (!profile) return (
+    <div className="flex flex-col items-center text-center">
+      <CircularProgress aria-label="Loading..." />
+      <p>Cargando perfil</p>
+    </div>
+  )
 
   return (
     <div className="w-full flex flex-col gap-8">
@@ -155,9 +211,10 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
             disabled
           />
           {!profile.emailVerified && (
-            <Button color="danger" onClick={emailModal.onOpen} type="button">
+            <Button color="danger" onClick={() => setEmailModalOpen(true)} type="button">
               Verificar
             </Button>
+
           )}
         </div>
 
@@ -199,7 +256,7 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
             labelPlacement="outside"
             type="file"
             placeholder="Sube tu DNI"
-            
+
             description="Formato: PDF o imagen (JPG, PNG)"
             className="w-full"
             accept="image/*,application/pdf"
@@ -216,12 +273,20 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
             labelPlacement="outside"
             value={profile.phoneNumber}
             onChange={e => setProfile({ ...profile, phoneNumber: e.target.value })}
-            startContent={<PhoneIcon className="text-2xl text-default-400" />}
+            startContent={
+              <div className="pointer-events-none flex items-center">
+
+                <PhoneIcon className="text-2xl text-default-400" />
+                <span className="text-default-400 text-small">+51</span>
+              </div>}
           />
-          {savedPhone && !profile.phoneVerified && (
-            <AdoptButton label="Verificar" variant="primary" type="button" onPress={phoneModal.onOpen} />
+          {!profile.phoneVerified && (
+            <Button color="danger" onClick={() => setPhoneModalOpen(true)} type="button">
+              Verificar
+            </Button>
           )}
         </div>
+
 
         <Input
           label={<div className="flex gap-1 items-center">Dirección {!profile.address && <span className="text-xs text-red-500">(Pendiente)</span>}</div>}
@@ -248,32 +313,78 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
 
       </form>
 
-      <form onSubmit={(e) => { e.preventDefault(); console.log('Actualizar contraseña') }} className="flex flex-col gap-6 mt-12">
+      <form onSubmit={handleChangePassword} className="flex flex-col gap-6 mt-12">
         <h2 className="text-2xl font-bold border-b pb-2 border-gray-300">Cambiar Contraseña</h2>
-        <Card className="shadow-primary">
-          <CardBody className="flex flex-col gap-6">
-            <Input label="Nueva contraseña" labelPlacement="outside" type="password" />
-            <Input label="Confirmar nueva contraseña" labelPlacement="outside" type="password" />
-            <AdoptButton label="Actualizar Contraseña" variant="primary" type="submit" />
-          </CardBody>
-        </Card>
+
+        <InputPassword
+          label="Contraseña actual"
+          value={currentPassword}
+          onChange={setCurrentPassword}
+          isRequired
+        />
+        <InputPassword
+          label="Nueva contraseña"
+          value={newPassword}
+          onChange={setNewPassword}
+          isRequired
+        />
+        {newPassword && (
+          <>
+            <Progress
+              value={(score + 1) * 20}
+              color={color}
+              showValueLabel={false}
+            />
+            <p className={`text-sm font-medium ${color === "danger"
+              ? "text-red-600"
+              : color === "warning"
+                ? "text-yellow-600"
+                : "text-green-600"
+              }`}>
+              Seguridad: {strengthLabel}
+            </p>
+            {suggestions.length > 0 && (
+              <ul className="text-xs text-gray-500 list-disc pl-5">
+                {suggestions.map((s, idx) => (
+                  <li key={idx}>{s}</li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+        <InputPassword
+          label="Confirmar nueva contraseña"
+          value={confirmNewPassword}
+          onChange={setConfirmNewPassword}
+          isRequired
+        />
+        {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
+        <AdoptButton
+          label={changingPassword ? "Actualizando..." : "Actualizar Contraseña"}
+          variant="primary"
+          type="submit"
+          isLoading={changingPassword}
+        />
       </form>
 
-      <Modal isOpen={emailModal.isOpen} onClose={emailModal.onClose}>
-        <ModalContent>
-          <ModalHeader>Verificar tu correo electrónico</ModalHeader>
-          <ModalBody><InputOtp length={6} value={otpValue} onValueChange={setOtpValue} /></ModalBody>
-          <ModalFooter><Button color="primary" onClick={emailModal.onClose}>Confirmar OTP</Button></ModalFooter>
-        </ModalContent>
-      </Modal>
 
-      <Modal isOpen={phoneModal.isOpen} onClose={phoneModal.onClose}>
-        <ModalContent>
-          <ModalHeader>Verificar tu número de teléfono</ModalHeader>
-          <ModalBody><InputOtp length={6} value={otpValue} onValueChange={setOtpValue} /></ModalBody>
-          <ModalFooter><Button color="primary" onClick={phoneModal.onClose}>Confirmar OTP</Button></ModalFooter>
-        </ModalContent>
-      </Modal>
+
+      <EmailVerificationModal
+        isOpen={emailModalOpen}
+        onClose={() => setEmailModalOpen(false)}
+        email={user?.email || ""}
+        userId={user?.userId || ""}
+        onSuccess={handleEmailVerified}
+      />
+
+
+      <PhoneVerificationModal
+        isOpen={phoneModalOpen}
+        onClose={() => setPhoneModalOpen(false)}
+        phoneNumber={profile.phoneNumber}
+        userId={user?.userId || ""}
+        onSuccess={handlePhoneVerified}
+      />
     </div>
   )
 }

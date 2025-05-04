@@ -7,6 +7,7 @@ import Cats from "../pages/global/Cats"
 import CatDetail from "../pages/global/CatDetail"
 import Profile from "../pages/global/Profile"
 import NotFound from "../pages/NotFound"
+import ResetPasswordPage from "../pages/global/ResetPassword"
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,8 @@ const AppRouter = () => {
       <Routes>
         {/* Layout Público */}
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+
 
 
         <Route element={<PublicLayout />}>

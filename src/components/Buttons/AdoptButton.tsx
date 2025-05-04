@@ -10,6 +10,7 @@ type AdoptButtonProps = {
   fullWidth?: boolean
   iconPosition?: "left" | "right"
   className?: string
+  disabled?: boolean
 }
 
 const AdoptButton = ({
@@ -21,6 +22,7 @@ const AdoptButton = ({
   iconPosition = "right",
   type = "button",
   className = "",
+  disabled=false,
 }: AdoptButtonProps) => {
   const color = variant === "primary" ? "primary" : "secondary"
 
@@ -30,6 +32,7 @@ const AdoptButton = ({
       color={color}
       onPress={onPress}
       type={type}
+      disabled={disabled}
       className={`font-semibold text-sm rounded-xl flex items-center gap-2 ${className} ${
         fullWidth ? "w-full justify-center" : ""
       }`}

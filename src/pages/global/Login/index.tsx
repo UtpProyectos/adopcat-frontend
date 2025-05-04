@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import RegisterForm from "../../../auth/RegisterForm"
+import ForgotPasswordModal from "../../../auth/ForgotPasswordModal"
 import LoginForm from "../../../auth/LoginForm"
 import GoogleLoginButton from "../../../auth/GoogleLoginButton"
 import { useAuth } from "../../../context/AuthContext"
@@ -20,6 +21,8 @@ const LoginPage = () => {
 
   const [showRegister, setShowRegister] = useState(false)
 
+  const [showForgotModal, setShowForgotModal] = useState(false)
+
   useEffect(() => {
     if (token) {
       navigate("/")
@@ -35,7 +38,7 @@ const LoginPage = () => {
   }, [token, navigate, fromState, location.pathname])
 
   const baseClasses =
-    "flex flex-col justify-center items-center px-6 py-16 md:p-20 z-10 w-full min-h-screen"
+    "flex flex-col justify-center items-center px-6 py-1 md:p-20 md:py-1 z-10 w-full min-h-screen"
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-body dark:bg-dark relative overflow-hidden">
@@ -51,14 +54,25 @@ const LoginPage = () => {
       </div>
       {/* LOGIN FORM */}
       <div className={`${showRegister ? "hidden md:flex" : "flex"} ${baseClasses}`}>
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-md space-y-4">
           <h1 className="text-3xl font-bold text-center">Iniciar sesión</h1>
           <LoginForm />
           <div className="text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 my-2">o</p>
             <GoogleLoginButton />
           </div>
-          <div className="text-center pt-4">
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={() => setShowForgotModal(true)}
+              className="text-sm text-gray-500 dark:text-gray-400 hover:underline cursor-pointer"
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
+
+
+          <div className="text-center ">
             <button
               onClick={() => setShowRegister(true)}
               className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
@@ -71,10 +85,10 @@ const LoginPage = () => {
 
       {/* REGISTER FORM */}
       <div className={`${!showRegister ? "hidden md:flex" : "flex"} ${baseClasses}`}>
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-md space-y-4">
           <h1 className="text-3xl font-bold text-center">Crear cuenta</h1>
           <RegisterForm />
-          <div className="text-center pt-4">
+          <div className="text-center">
             <button
               onClick={() => setShowRegister(false)}
               className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
@@ -98,7 +112,12 @@ const LoginPage = () => {
           className="w-3/4 h-auto object-contain pointer-events-none"
         />
       </motion.div>
+
+      <ForgotPasswordModal isOpen={showForgotModal} onClose={() => setShowForgotModal(false)} />
+
     </div>
+
+    
   )
 }
 

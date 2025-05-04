@@ -2,11 +2,10 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { Chip, Tooltip, Tabs, Tab, Card, CardBody, Progress } from "@heroui/react";
 import { Link } from "react-router-dom";
-import InfoTab from "./components/Tabs/InfoTab";
+import InfoTab, { UserProfile } from "./components/Tabs/InfoTab";
 import CatsTab from "./components/Tabs/CatsTab";
 import RequestTab from "./components/Tabs/RequestTab";
 import { useState } from "react";
-import type { UserProfile } from "./components/Tabs/InfoTab";
 
 
 const Profile = () => {
@@ -14,7 +13,7 @@ const Profile = () => {
 
   const [fullProfile, setFullProfile] = useState<UserProfile | null>(null);
 
-  const totalFields = 7;
+  const totalFields = 8;
   const completedFields = [
     fullProfile?.firstName,
     fullProfile?.lastName,
@@ -22,8 +21,9 @@ const Profile = () => {
     fullProfile?.phoneNumber,
     fullProfile?.address,
     fullProfile?.dniUrl,
-    fullProfile?.emailVerified
-  ].filter((val) => val && val !== "" && val !== false).length;
+    fullProfile?.emailVerified,
+    fullProfile?.phoneVerified
+  ].filter((val) => val && val !== "").length;
 
   const progressValue = Math.round((completedFields / totalFields) * 100);
 
@@ -39,7 +39,7 @@ const Profile = () => {
     { id: "donaciones", label: "Donaciones", component: <RequestTab /> },
     { id: "rescatados", label: "Rescatados", component: <RequestTab /> },
   ];
-
+  
 
   const profileImage = user?.profilePhoto
     ? user.profilePhoto
@@ -53,14 +53,14 @@ const Profile = () => {
         <img
           src={profileImage}
           alt="Foto de perfil"
-          className="w-40 h-40 rounded-full object-cover"
+          className="md:w-20 md:h-20 lg:w-40 lg:h-40  rounded-full object-cover  "
         />
 
         <div className="flex flex-col items-start gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-3xl font-bold">
+                <h1 className="text-3xl font-bold md:text-xl">
                   {user?.firstName || ""} {user?.lastName || ""}
                 </h1>
 
@@ -78,7 +78,7 @@ const Profile = () => {
 
               {/* Plan */}
               <Link to="/planes">
-                <Chip color="success" className="text-body">
+                <Chip color="success" className="text-body md:text-xs text-sm  ">
                   Free
                 </Chip>
               </Link>
@@ -109,10 +109,11 @@ const Profile = () => {
         </div>
       </section>
 
-      {/* Tabs */}
-      <section className="w-full">
+       {/* Tabs */}
+       <section className="w-full px-4 sm:px-6 md:px-8">
         <div className="flex w-full flex-col items-center">
-          <Tabs aria-label="Tabs de perfil" items={tabs} radius="lg">
+        
+          <Tabs aria-label="Tabs de perfil" items={tabs} radius="lg" className="w-full flex items-center justify-center">
             {(item) => (
               <Tab key={item.id} title={item.label}>
 

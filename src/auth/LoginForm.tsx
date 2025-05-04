@@ -2,7 +2,7 @@ import { useState } from "react"
 import { api } from "../services/api"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
-import { Input } from "@heroui/react" 
+import { addToast, Input } from "@heroui/react" 
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../components/IconsSvg/EyeIcons"
 import AdoptButton from "../components/Buttons/AdoptButton"
 import MailIcon from "../components/IconsSvg/MailIcon"
@@ -26,13 +26,19 @@ const LoginForm = () => {
     try {
       const res = await api.post("/auth/login", { email, password })
       login(res.data.token, res.data.user)
+      addToast({
+        title: "Inicio de sesión exitoso",
+        description: "Bienvenido de nuevo.", 
+        timeout: 3000,
+        color: "success",
+        shouldShowTimeoutProgress: true,
+      })  
       navigate("/dashboard")
+    
     } catch (err: any) {
-      console.error("Error al iniciar sesión", err)
+      console.error("Error al iniciar sesión", err) 
       setError(
-        err.response?.status === 401 || err.response?.status === 403
-          ? "Credenciales inválidas. Verifica tu correo y contraseña."
-          : "Error de conexión. Intenta nuevamente."
+        err.response?.data?.message || "Error de conexión. Intenta nuevamente."
       )
     } finally {
       setLoading(false)
@@ -41,7 +47,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleLogin} className="space-y-6 max-w-md mx-auto" autoComplete="on">
-      <div className="space-y-4">
+      <div className="space-y-4 flex flex-col gap-1">
         <Input
           label="Email"
           labelPlacement="outside"
