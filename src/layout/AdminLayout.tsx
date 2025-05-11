@@ -1,14 +1,14 @@
- 
-import { Outlet } from "react-router-dom"
-import NavbarPublic from "../components/Navbars/NavbarPublic"
+
+import { Outlet } from "react-router-dom" 
+import SidebarAdmin from "../components/Admin/SidebarAdmin"
 
 const AdminLayout = () => {
   return (
-    <div className="flex h-screen"> 
-          <NavbarPublic />
-      <div className="flex-1 p-6 overflow-auto ">
-        <Outlet />   {/* Aquí sí va */}
-      </div>
+    <div className="flex h-screen">
+      <SidebarAdmin />
+      <main className="flex-1 overflow-y-auto p-6">
+        <Outlet />
+      </main>
     </div>
   )
 }

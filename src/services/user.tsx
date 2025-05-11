@@ -89,5 +89,24 @@ export const userService = {
       email,
       code
     })
-  }
+  },
+  
+  /**
+   * 🔄 Actualiza el estado de aprobación/rechazo del usuario
+   * @param userId - El ID del usuario
+   * @param approve - true para aprobar, false para rechazar
+   */
+  updateUserApproval: (userId: string, approve: boolean) => {
+    return api.put(`/users/${userId}/verify`, null, {
+      params: { approve }, // Pasar el valor de 'approve' como parámetro
+    });
+  },
+
+  /**
+   * Obtiene todos los usuarios (solo para admin)
+   */
+  getUsers: () => {
+    return api.get("/users");
+  },
+  
 }

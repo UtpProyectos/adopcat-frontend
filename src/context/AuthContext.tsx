@@ -23,6 +23,7 @@ interface AuthContextProps {
   login: (token: string, user: User) => void
   logout: () => void
   setUser: React.Dispatch<React.SetStateAction<User | null>>
+  initialized: boolean // ✅ Nuevo
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
+  const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
     try {
@@ -43,8 +45,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.error("❌ Error al leer del localStorage:", err)
       logout()
+    } finally {
+      setInitialized(true) // ✅ Mover fuera del if/try
     }
   }, [])
+
 
   const login = (newToken: string, newUser: User) => {
     localStorage.setItem("token", newToken)
@@ -75,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, setUser }}>
+    <AuthContext.Provider value={{ token, user, login, logout, setUser, initialized }}>
       {children}
     </AuthContext.Provider>
   )
