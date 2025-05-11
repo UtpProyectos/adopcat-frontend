@@ -21,10 +21,14 @@ export const columns = [
 ];
 
 const UserPage: React.FC = () => {
-    const [filterValue, setFilterValue] = useState<string>(""); // Valor del filtro de búsqueda
+    // const [filterValue, setFilterValue] = useState<string>(""); // Valor del filtro de búsqueda
+    const [filterValue] = useState<string>(""); // Valor del filtro de búsqueda
     const [statusFilter, setStatusFilter] = useState<string>("all"); // Filtro de estado
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-    const [page, setPage] = useState<number>(1);
+    //const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const [rowsPerPage] = useState<number>(5);
+    
+    const [page] = useState<number>(1);
+    // const [page, setPage] = useState<number>(1);
     const [users, setUsers] = useState<UserResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -38,6 +42,7 @@ const UserPage: React.FC = () => {
                 setLoading(false);
             })
             .catch(error => {
+                console.error("Error al cargar los usuarios:", error);
                 setError("Error al cargar los usuarios.");
                 setLoading(false);
             });
@@ -68,7 +73,7 @@ const UserPage: React.FC = () => {
         return filteredUsers;
     }, [filterValue, statusFilter, users]);
 
-    const pages = Math.ceil(filteredItems.length / rowsPerPage);
+    // const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;

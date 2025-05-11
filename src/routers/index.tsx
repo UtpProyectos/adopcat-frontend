@@ -19,15 +19,21 @@ const AppRouter = () => {
   const [showLoader, setShowLoader] = useState(true)
 
   useEffect(() => {
-    if (initialized) { 
+    if (initialized) {
       const timeout = setTimeout(() => {
         setShowLoader(false)
-      }, 300) 
+      }, 300)
       return () => clearTimeout(timeout)
     }
   }, [initialized])
 
-  if (!initialized || showLoader) return <LoadingScreen />
+  if (!initialized || showLoader) {
+    console.log("⏳ Cargando Auth...");
+    return <LoadingScreen />;
+  }
+
+  console.log("✅ Auth listo, renderizando rutas...");
+
 
 
   return (
