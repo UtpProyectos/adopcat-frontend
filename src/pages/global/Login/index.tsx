@@ -68,7 +68,7 @@ const LoginPage = () => {
         <div className="w-full max-w-md space-y-4">
           <h1 className="text-3xl font-bold text-center">Iniciar sesión</h1>
           <LoginForm />
-          <div className="text-center">
+          <div className="text-center flex flex-col items-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 my-2">o</p>
             <GoogleLoginButton />
           </div>
