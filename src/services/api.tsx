@@ -2,7 +2,9 @@ import axios from "axios"
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
+  // timeout: 10000,
+  timeout: 60000 ,// 60 segundos para desarrollo
+
 })
 
 // Lista de endpoints públicos
