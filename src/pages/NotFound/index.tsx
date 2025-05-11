@@ -32,8 +32,7 @@ export default function NotFound() {
 
         {/* Botones de navegación */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Button
-            variant="secondary"
+          <Button 
             onClick={() => navigate(-1)}
             className="flex items-center gap-2"
           >
@@ -42,7 +41,7 @@ export default function NotFound() {
           </Button>
 
           <Link to="/">
-            <Button variant="primary" className="flex items-center gap-2">
+            <Button className="flex items-center gap-2">
               <Home className="h-4 w-4" />
               Ir al Inicio
             </Button>
