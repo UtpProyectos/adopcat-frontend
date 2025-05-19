@@ -5,6 +5,7 @@ import PublicLayout from "../layout/PublicLayout"
 import AdminLayout from "../layout/AdminLayout"
 import Cats from "../pages/global/Cats"
 import CatDetail from "../pages/global/CatDetail"
+<<<<<<< HEAD
 import Profile from "../pages/global/Profile"
 import NotFound from "../pages/NotFound"
 import ResetPasswordPage from "../pages/global/ResetPassword"
@@ -21,6 +22,10 @@ import OrganizationTab from "../pages/global/Profile/components/Tabs/Organizatio
 import OrganizationDashboard from "../pages/organization/Dashboard"
 import OrganizationDetailLayout from "../layout/OrganizationsLayout"
 import OrganizationConfig from "../pages/organization/Config"
+=======
+import Shelters from "../pages/global/Shelters"
+import Knowledge from "../pages/global/Knowledge"
+>>>>>>> feat/victor
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -53,6 +58,8 @@ const AppRouter = () => {
           <Route path="/" element={<Home />} />
           <Route path="/cats" element={<Cats />} />
           <Route path="/cats/:id" element={<CatDetail />} />
+          <Route path="/shelters" element={<Shelters />} />
+          <Route path="/knowledge" element={<Knowledge />} />
 
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
