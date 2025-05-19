@@ -44,7 +44,7 @@ const tipsRefugio = [
   { title: "Promueve la adopción inclusiva", desc: "Visibiliza gatos con necesidades especiales." },
   { title: "Actualiza tus redes sociales", desc: "Comparte historias, logros y necesidades del refugio." },
   { title: "Agradece a donantes y voluntarios", desc: "Reconoce públicamente su apoyo y compromiso." },
-};
+];
 
 const content: Record<TabKey, ReactNode> = {
   articulos: (
