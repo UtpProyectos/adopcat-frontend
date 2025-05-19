@@ -1,15 +1,12 @@
-import { JSX } from "react"
+import { Navigate, Outlet } from "react-router-dom" 
 import { useAuth } from "../context/AuthContext"
-import { Navigate } from "react-router-dom"
 
-const AdminRoute = ({ children }: { children: JSX.Element }) => {
-  const { user } = useAuth()
-
-  const isAdmin = user?.role?.toUpperCase?.().trim() === "ROLE_ADMIN"
-
-  if (!user) return <Navigate to="/login" replace />
-  if (!isAdmin) return <Navigate to="/" replace /> 
-  return children
+const AdminRoute = () => {
+  const { user, token, initialized } = useAuth()
+  if (!initialized) return null
+  return token && user?.role === "ROLE_ADMIN"
+    ? <Outlet />
+    : <Navigate to="/login" />
 }
 
 export default AdminRoute

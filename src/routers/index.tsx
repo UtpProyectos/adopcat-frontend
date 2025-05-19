@@ -13,6 +13,14 @@ import { useAuth } from "../context/AuthContext"
 import LoadingScreen from "../components/common/LoadingScreen"
 import { useEffect, useState } from "react"
 import UsersPage from "../pages/admin/Users"
+import AdminRoute from "./AdminRoute"
+import PrivateRoute from "./PrivateRoute"
+import OrganizationsAdminPage from "../pages/admin/Organizations"
+import OrganizationsLayout from "../layout/OrganizationsLayout"
+import OrganizationTab from "../pages/global/Profile/components/Tabs/OrganizationTab"
+import OrganizationDashboard from "../pages/organization/Dashboard"
+import OrganizationDetailLayout from "../layout/OrganizationsLayout"
+import OrganizationConfig from "../pages/organization/Config"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -28,36 +36,49 @@ const AppRouter = () => {
   }, [initialized])
 
   if (!initialized || showLoader) {
-    console.log("⏳ Cargando Auth...");
     return <LoadingScreen />;
   }
-
-  console.log("✅ Auth listo, renderizando rutas...");
 
 
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* Layout Público */}
+        {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-
-
+        {/* Layout público */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/cats" element={<Cats />} />
           <Route path="/cats/:id" element={<CatDetail />} />
-          <Route path="/perfil" element={<Profile />} />
+
+          {/* Ruta protegida solo para usuarios logueados */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/perfil" element={<Profile />} />
+          </Route>
         </Route>
 
-        {/* Layout Admin  protegemos con adminroute*/}
-        <Route path="/admin" element={
-          <AdminLayout />
-        }>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="users" element={<UsersPage />} />
+        {/* Layout de organizaciones */} 
+        <Route element={<PrivateRoute />}>
+          <Route path="/organizaciones" element={<OrganizationsLayout />}>
+            <Route index element={<OrganizationTab />} />
+            <Route path=":id" element={<OrganizationDashboard />} />
+            <Route path=":id/configuracion" element={<OrganizationConfig />} />
+          </Route>
+        </Route>
+
+
+
+
+        {/* Layout admin protegido */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="organizaciones" element={<OrganizationsAdminPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />

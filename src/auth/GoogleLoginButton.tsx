@@ -43,6 +43,7 @@ const GoogleLoginButton = () => {
           text="signin_with"
           logo_alignment="left"
           width="100%"
+          
         />
       </div>
     </div>

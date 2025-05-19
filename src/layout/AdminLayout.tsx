@@ -1,6 +1,6 @@
 
 import { Outlet } from "react-router-dom" 
-import SidebarAdmin from "../components/Admin/SidebarAdmin"
+import SidebarAdmin from "../components/Sidebars/SidebarAdmin"
 
 const AdminLayout = () => {
   return (

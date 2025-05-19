@@ -13,19 +13,9 @@ import InputPassword from "../../../../../components/Inputs/InputPassword"
 import { validarPassword } from "../../../../../auth/passwordValidator"
 import PhoneVerificationModal from "../Modals/PhoneVerificationModal"
 import EmailVerificationModal from "../Modals/EmailVerificationModal"
+import { UserProfile } from "../../../../../models/user"
 
-export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phoneNumber: string;
-  address: string;
-  dniUrl: string;
-  emailVerified: boolean;
-  phoneVerified: boolean;
-  adminApproved: boolean;
-}
-
+ 
 
 const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => void }) => {
 

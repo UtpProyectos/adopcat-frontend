@@ -1,17 +1,36 @@
 import { CheckCircle, XCircle } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
-import { Chip, Tooltip, Tabs, Tab, Card, CardBody, Progress } from "@heroui/react";
-import { Link } from "react-router-dom";
-import InfoTab, { UserProfile } from "./components/Tabs/InfoTab";
+import {
+  Chip,
+  Tooltip,
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  Progress,
+} from "@heroui/react";
+import { Link, useLocation } from "react-router-dom";
+import InfoTab from "./components/Tabs/InfoTab";
 import CatsTab from "./components/Tabs/CatsTab";
 import RequestTab from "./components/Tabs/RequestTab";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import OrganizationTab from "./components/Tabs/OrganizationTab";
+import MyPage from "./components/Tabs/Pruebatab";
+import { UserProfile } from "../../../models/user";
 
 const Profile = () => {
+  const location = useLocation();
   const { user } = useAuth();
 
   const [fullProfile, setFullProfile] = useState<UserProfile | null>(null);
+  const [activeTab, setActiveTab] = useState("info");
+
+  // Leer tab desde query param y sincronizar estado del tab activo
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+    if (tab) setActiveTab(tab);
+  }, [location.search]);
 
   const totalFields = 8;
   const completedFields = [
@@ -22,24 +41,30 @@ const Profile = () => {
     fullProfile?.address,
     fullProfile?.dniUrl,
     fullProfile?.emailVerified,
-    fullProfile?.phoneVerified
+    fullProfile?.phoneVerified,
   ].filter((val) => val && val !== "").length;
 
   const progressValue = Math.round((completedFields / totalFields) * 100);
 
-
-
   const tabs = [
     { id: "info", label: "Información", component: <InfoTab onProfileLoad={setFullProfile} /> },
-
     { id: "mis-gatos", label: "Mis Gatos", component: <CatsTab /> },
     { id: "solicitudes", label: "Solicitudes", component: <RequestTab /> },
     { id: "planes", label: "Planes", component: <RequestTab /> },
-    { id: "organizaciones", label: "Organizaciones", component: <RequestTab /> },
     { id: "donaciones", label: "Donaciones", component: <RequestTab /> },
-    { id: "rescatados", label: "Rescatados", component: <RequestTab /> },
+    { id: "rescatados", label: "Rescatados", component: <MyPage /> },
+    { id: "organizaciones", label: "Organizaciones", component: <OrganizationTab /> },
   ];
-  
+
+  const filteredTabs = tabs.filter((tab) => {
+    // Tabs que requieren usuario verificado
+    const needsVerified = ["mis-gatos", "solicitudes", "rescatados", "organizaciones"];
+
+    if (needsVerified.includes(tab.id)) {
+      return user?.verified;
+    }
+    return true;
+  });
 
   const profileImage = user?.profilePhoto
     ? user.profilePhoto
@@ -47,15 +72,13 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto flex flex-col items-center gap-8 pt-30">
-
       {/* Perfil */}
       <section className="flex items-center justify-center gap-6 w-full m-auto max-w-6xl">
         <img
           src={profileImage}
           alt="Foto de perfil"
-          className="md:w-20 md:h-20 lg:w-40 lg:h-40  rounded-full object-cover  "
+          className="md:w-20 md:h-20 lg:w-40 lg:h-40 rounded-full object-cover"
         />
-
         <div className="flex flex-col items-start gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
@@ -78,7 +101,7 @@ const Profile = () => {
 
               {/* Plan */}
               <Link to="/planes">
-                <Chip color="success" className="text-body md:text-xs text-sm  ">
+                <Chip color="success" className="text-body md:text-xs text-sm">
                   Free
                 </Chip>
               </Link>
@@ -105,18 +128,22 @@ const Profile = () => {
               <Progress aria-label="Progreso de perfil" value={100} color="success" />
             </div>
           )}
-
         </div>
       </section>
 
-       {/* Tabs */}
-       <section className="w-full px-4 sm:px-6 md:px-8">
+      {/* Tabs */}
+      <section className="w-full px-4 sm:px-6 md:px-8">
         <div className="flex w-full flex-col items-center">
-        
-          <Tabs aria-label="Tabs de perfil" items={tabs} radius="lg" className="w-full flex items-center justify-center">
+          <Tabs
+            aria-label="Tabs de perfil"
+            items={filteredTabs}
+            radius="lg"
+            className="w-full flex items-center justify-center"
+            selectedKey={activeTab}  // Aquí está el cambio importante
+            onSelectionChange={(key) => setActiveTab(String(key))}
+          >
             {(item) => (
               <Tab key={item.id} title={item.label}>
-
                 <Card className="shadow-primary mt-4 w-full max-w-6xl px-5 py-5 rounded-4xl">
                   <CardBody>{item.component}</CardBody>
                 </Card>
@@ -125,7 +152,6 @@ const Profile = () => {
           </Tabs>
         </div>
       </section>
-
     </div>
   );
 };
