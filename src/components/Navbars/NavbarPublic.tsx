@@ -12,6 +12,8 @@ import ThemeButton from "../Buttons/ThemeButton"
 const links = [
   { name: "Home", href: "/" },
   { name: "Cats", href: "/cats" },
+  { name: "Refugios", href: "/shelters" },
+  { name: "Conocimiento", href: "/knowledge" },
   { name: "Proceso Adopción", href: "/proceso-adopcion" },
   { name: "Planes", href: "/planes" },
   { name: "FAQ", href: "/faq" },
