@@ -178,6 +178,7 @@ export default function OrganizationsAdminPage() {
         setLoading(true)
         try {
             const res = await organizationService.getAll()
+            console.log(res.data)
             setData(res.data)
         } catch (error) {
             console.error("Error cargando organizaciones", error)
