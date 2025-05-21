@@ -51,8 +51,7 @@ const statusOptions: StatusOption[] = [
 
 export default function AdminUserPage() {
     const [data, setData] = useState<UserResponse[]>([])
-    const [loading, setLoading] = useState(false)
-    const [showModal, setShowModal] = useState(false) // para añadir nuevo admin o editar
+    // const [loading, setLoading] = useState(false)
 
     // Si necesitas mapear adminApproved a string, hazlo solo para filtros o visualización, no para la data de la tabla
     // const mappedData = data.map((user) => ({
@@ -61,14 +60,11 @@ export default function AdminUserPage() {
     // }))
 
     const fetchUsers = async () => {
-        setLoading(true)
         try {
             const res = await userService.getUsers()
             setData(res.data)
         } catch (error) {
             console.error("Error fetching users", error)
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -89,11 +85,10 @@ export default function AdminUserPage() {
                 initialSort={{ column: "userId", direction: "ascending" }}
                 initialRowsPerPage={5}
                 button_label="Add New User"
-                onAddNew={() => setShowModal(true)}
+                onAddNew={() => { /* Implement modal logic here if needed */ }}
                 showStatusFilter={true}
 
             />
-
         </div>
 
     )

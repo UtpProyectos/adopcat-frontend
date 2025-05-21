@@ -31,7 +31,7 @@ const columns: Column<User>[] = [
     name: "Actions",
     uid: "actions",
     align: "center",
-    render: (user) => <div>Custom actions here</div>,
+    render: (_) => <div>Custom actions here</div>,
   },
 ];
 

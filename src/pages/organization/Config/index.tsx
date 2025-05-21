@@ -91,20 +91,22 @@ export default function OrganizationConfig() {
       <Input name="ruc" label="RUC" value={form.ruc} onChange={handleChange} maxLength={11} required />
       <Select name="tipo" label="Tipo" value={form.tipo} onChange={handleChange} required>
         {tipos.map((t) => (
-          <SelectItem key={t} value={t}>{t}</SelectItem>
+          <SelectItem key={t}>{t}</SelectItem>
         ))}
       </Select>
       <Select name="status" label="Estado" value={form.status} onChange={handleChange} required>
         {estados.map((e) => (
-          <SelectItem key={e} value={e}>{e}</SelectItem>
+          <SelectItem key={e}>{e}</SelectItem>
         ))}
       </Select>
-      <Checkbox
-        name="verified"
-        label="Verificado"
-        isSelected={form.verified}
-        onChange={(e) => setForm((prev) => ({ ...prev, verified: (e.target as HTMLInputElement).checked }))}
-      />
+      <div className="flex items-center gap-2">
+        <Checkbox
+          name="verified"
+          isSelected={form.verified}
+          onChange={(e) => setForm((prev) => ({ ...prev, verified: (e.target as HTMLInputElement).checked }))}
+        />
+        <label htmlFor="verified" className="font-medium">Verificado</label>
+      </div>
       <Textarea name="description" label="Descripción" value={form.description} onChange={handleChange} />
       <Input name="address" label="Dirección" value={form.address} onChange={handleChange} />
       <Input name="latitude" label="Latitud" value={form.latitude} onChange={handleChange} />

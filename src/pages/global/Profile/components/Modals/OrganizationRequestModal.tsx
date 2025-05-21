@@ -14,9 +14,9 @@ import {
 } from "@heroui/react"
 import { organizationService } from "../../../../../services/organization"
 import AdoptButton from "../../../../../components/Buttons/AdoptButton"
-
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
+import { MapContainer, MapContainerProps, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
+import { LeafletMouseEvent } from 'leaflet'
 
 interface Props {
   isOpen: boolean
@@ -30,12 +30,13 @@ const LocationPicker = ({
   onSelect: (lat: number, lng: number) => void
 }) => {
   useMapEvents({
-    click(e) {
+    click(e: LeafletMouseEvent) {
       onSelect(e.latlng.lat, e.latlng.lng)
     },
   })
   return null
 }
+
 
 const OrganizationRequestModal = ({ isOpen, onClose, onSuccess }: Props) => {
   const [form, setForm] = useState({
@@ -47,6 +48,12 @@ const OrganizationRequestModal = ({ isOpen, onClose, onSuccess }: Props) => {
     latitude: 0,
     longitude: 0,
   })
+
+  const centerPosition: [number, number] =
+    form.latitude !== 0 && form.longitude !== 0
+      ? [Number(form.latitude), Number(form.longitude)]
+      : [-12.0464, -77.0428]
+
 
   const tipos = [
     { key: "Refugio", label: "Refugio" },
@@ -197,17 +204,15 @@ const OrganizationRequestModal = ({ isOpen, onClose, onSuccess }: Props) => {
             </label>
             <div className="h-64 w-full rounded-xl overflow-hidden border border-gray-300">
               <MapContainer
-                center={
-                  form.latitude !== 0 && form.longitude !== 0
-                    ? [form.latitude, form.longitude]
-                    : [-12.0464, -77.0428]
-                }
-                zoom={13}
-                className="h-full w-full"
+                {...({
+                  center: centerPosition,
+                  zoom: 13,
+                  className: "h-full w-full",
+                } as MapContainerProps)}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {form.latitude !== 0 && form.longitude !== 0 && (
-                  <Marker position={[form.latitude, form.longitude]} />
+                  <Marker position={[Number(form.latitude), Number(form.longitude)]} />
                 )}
                 <LocationPicker
                   onSelect={(lat, lng) =>

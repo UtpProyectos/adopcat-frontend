@@ -14,7 +14,7 @@ const statusOptions: StatusOption[] = [
 
 export default function OrganizationTab() {
   const [data, setData] = useState<OrganizationResponse[]>([])
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Estados para modal eliminar
@@ -24,15 +24,12 @@ export default function OrganizationTab() {
   const [deleting, setDeleting] = useState(false)
 
   const fetchOrganizations = async () => {
-    setLoading(true)
     try {
       const res = await organizationService.getAll()
       setData(res.data)
     } catch (error) {
       console.error("Error cargando organizaciones", error)
       addToast({ title: "Error cargando organizaciones", color: "danger" })
-    } finally {
-      setLoading(false)
     }
   }
 
