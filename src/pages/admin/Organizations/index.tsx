@@ -130,7 +130,7 @@ function VerifiedSwitchCell({ org, onUpdated }: { org: OrganizationResponse; onU
 
 export default function OrganizationsAdminPage() {
     const [data, setData] = useState<OrganizationResponse[]>([])
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
     const [selectedOrganization, setSelectedOrganization] = useState<OrganizationResponse | null>(null)
     const [showDetailModal, setShowDetailModal] = useState(false)
@@ -175,15 +175,12 @@ export default function OrganizationsAdminPage() {
     ]
 
     const fetchOrganizations = async () => {
-        setLoading(true)
         try {
             const res = await organizationService.getAll()
             console.log(res.data)
             setData(res.data)
         } catch (error) {
             console.error("Error cargando organizaciones", error)
-        } finally {
-            setLoading(false)
         }
     }
 
