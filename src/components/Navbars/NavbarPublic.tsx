@@ -14,7 +14,7 @@ const links = [
   { name: "Cats", href: "/cats" },
   { name: "Refugios", href: "/shelters" },
   { name: "Conocimiento", href: "/knowledge" },
-  { name: "Proceso Adopción", href: "/proceso-adopcion" },
+  { name: "Proceso Adopción", href: "/adoption-process" },
   { name: "Planes", href: "/planes" },
   { name: "FAQ", href: "/faq" },
 ]
@@ -127,7 +127,7 @@ const NavbarPublic = () => {
               />
 
               <div className="absolute right-[-4px] w-40 bg-white dark:bg-dark shadow-md rounded-lg p-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <NavLink to="/perfil" className="block px-3 py-2 hover:text-primary">
+                <NavLink to="/profile" className="block px-3 py-2 hover:text-primary">
                   Ver perfil
                 </NavLink>
                 <button

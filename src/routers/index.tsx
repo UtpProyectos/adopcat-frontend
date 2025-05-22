@@ -21,7 +21,8 @@ import OrganizationTab from "../pages/global/Profile/components/Tabs/Organizatio
 import OrganizationDashboard from "../pages/organization/Dashboard" 
 import OrganizationConfig from "../pages/organization/Config"
 import Knowledge from "../pages/global/Knowledge"
-import SheltersModule from "../pages/global/Shelters"
+import SheltersModule from "../pages/global/Shelters" 
+import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -56,10 +57,11 @@ const AppRouter = () => {
           <Route path="/cats/:id" element={<CatDetail />} />
           <Route path="/shelters" element={<SheltersModule />} />
           <Route path="/knowledge" element={<Knowledge />} />
+          <Route path="/adoption-process" element={<CurvedRoadTimeline />} />
 
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
-            <Route path="/perfil" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
 
