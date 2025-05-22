@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 const tabs = [
   { label: "Listado", key: "listado" },
   { label: "Buscar", key: "buscar" },
-  { label: "Mapa", key: "mapa" },
-  { label: "Agregar Refugio", key: "agregar" },
+  { label: "Mapa", key: "mapa" }
 ];
 
 const shelters = [
@@ -111,7 +110,7 @@ const shelters = [
   }
 ];
 
-type TabKey = "listado" | "buscar" | "mapa" | "agregar";
+type TabKey = "listado" | "buscar" | "mapa";
 
 const ShelterCard: FC<{ shelter: typeof shelters[0]; onClick?: () => void }> = ({ shelter, onClick }) => (
   <motion.div
@@ -324,48 +323,6 @@ const ShelterMap: FC = () => (
   </motion.div>
 );
 
-const ShelterForm: FC = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 2500);
-  };
-  return (
-    <motion.form
-      className="bg-white rounded-2xl shadow-xl p-8 max-w-xl mx-auto flex flex-col gap-4 border-2 border-primary/10"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      onSubmit={handleSubmit}
-    >
-      <h2 className="text-2xl font-bold text-primary mb-4 text-center">Agregar Refugio</h2>
-      <input type="text" placeholder="Nombre del refugio" className="px-4 py-2 rounded-full border-2 border-primary/30 focus:border-primary outline-none" required />
-      <input type="text" placeholder="Ubicación" className="px-4 py-2 rounded-full border-2 border-primary/30 focus:border-primary outline-none" required />
-      <textarea placeholder="Descripción" className="px-4 py-2 rounded-2xl border-2 border-primary/30 focus:border-primary outline-none resize-none" rows={3} required />
-      <input type="url" placeholder="URL de imagen" className="px-4 py-2 rounded-full border-2 border-primary/30 focus:border-primary outline-none" required />
-      <motion.button
-        type="submit"
-        whileTap={{ scale: 0.95 }}
-        whileHover={{ scale: 1.05 }}
-        className="bg-primary text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-primary/90 transition-colors mt-2"
-      >
-        Agregar
-      </motion.button>
-      {submitted && (
-        <motion.div
-          className="text-green-600 font-bold text-center mt-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          ¡Refugio agregado exitosamente! (Simulado)
-        </motion.div>
-      )}
-    </motion.form>
-  );
-};
-
 const SheltersModule: FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("listado");
   const [selectedShelter, setSelectedShelter] = useState<typeof shelters[0] | null>(null);
@@ -382,7 +339,6 @@ const SheltersModule: FC = () => {
       <><ShelterSearchBar /><ShelterList onSelect={setSelectedShelter} /></>
     ),
     mapa: <ShelterMap />,
-    agregar: <ShelterForm />,
   };
 
   return (
