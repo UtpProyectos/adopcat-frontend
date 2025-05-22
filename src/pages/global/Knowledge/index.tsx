@@ -184,7 +184,7 @@ const TipsSection = ({
   openTip,
   setOpenTip,
 }: {
-  tips: { title: string; desc: string }[];
+  tips: { title: string; desc: string; more: string }[];
   openTip: number | null;
   setOpenTip: (i: number | null) => void;
 }) => (
@@ -382,21 +382,16 @@ const Knowledge = () => {
             <span className="text-primary font-bold text-lg">Glosario Felino</span>
           </div>
           <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base md:text-lg">
-            {userPlan === "premium" ? (
-              <>
-                <li><b>Esterilización:</b> Procedimiento para evitar la reproducción. <span className="text-primary">Incluye video explicativo.</span></li>
-                <li><b>Desparasitación:</b> Eliminación de parásitos internos y externos. <span className="text-primary">Guía descargable.</span></li>
-                <li><b>Socialización:</b> Proceso de adaptación del gato a personas y otros animales. <span className="text-primary">Consejos avanzados.</span></li>
-                <li><b>Enriquecimiento ambiental:</b> Estrategias para mejorar el bienestar del gato en casa. <span className="text-primary">Ejemplos interactivos.</span></li>
-              </>
-            ) : (
-              <>
-                <li><b>Esterilización:</b> Procedimiento para evitar la reproducción.</li>
-                <li><b>Desparasitación:</b> Eliminación de parásitos internos y externos.</li>
-                <li><b>Socialización:</b> Proceso de adaptación del gato a personas y otros animales.</li>
-                <li><b>Enriquecimiento ambiental:</b> Estrategias para mejorar el bienestar del gato en casa.</li>
-              </>
-            )}
+            <li><b>Esterilización:</b> Procedimiento para evitar la reproducción.</li>
+            <li><b>Desparasitación:</b> Eliminación de parásitos internos y externos.</li>
+            <li><b>Socialización:</b> Proceso de adaptación del gato a personas y otros animales.</li>
+            <li><b>Enriquecimiento ambiental:</b> Estrategias para mejorar el bienestar del gato en casa.</li>
+            <li><b>Feromonas:</b> Sustancias químicas que ayudan a calmar y comunicar a los gatos.</li>
+            <li><b>Rascador:</b> Objeto diseñado para que los gatos afilen sus uñas y marquen territorio.</li>
+            <li><b>Vacunación:</b> Proceso de inmunización para prevenir enfermedades infecciosas.</li>
+            <li><b>Microchip:</b> Dispositivo de identificación electrónica implantado bajo la piel del gato.</li>
+            <li><b>Adopción responsable:</b> Proceso de seleccionar y preparar un hogar adecuado para un gato.</li>
+            <li><b>Refugio:</b> Lugar temporal o permanente que brinda protección y cuidados a gatos sin hogar.</li>
           </ul>
           {userPlan === "free" && (
             <div className="mt-6 bg-primary/10 rounded-lg p-4 text-center">
