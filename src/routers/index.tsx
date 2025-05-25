@@ -17,6 +17,7 @@ const AppRouter = () => {
           <Route path="/cats" element={<Cats />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cats/:id" element={<CatDetail />} />
+          <Route path="/proceso-adopcion" element={<AdoptionProcess />} /> 
         </Route>
 
         {/* Layout Admin */}
