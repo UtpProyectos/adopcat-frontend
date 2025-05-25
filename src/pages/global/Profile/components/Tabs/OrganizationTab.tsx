@@ -115,7 +115,7 @@ export default function OrganizationTab() {
       render: (org) => (
         <>
           <div className="flex gap-2">
-            <Button size="sm" color="primary" onPress={() => window.location.href = `/organizaciones/${org.organizationId}`}>
+            <Button size="sm" color="primary" onPress={() => window.location.href = `/organizations/${org.organizationId}`}>
               Entrar
             </Button>
             <Button size="sm" color="danger" onPress={() => openDeleteModal(org)}>

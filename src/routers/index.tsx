@@ -23,6 +23,7 @@ import OrganizationConfig from "../pages/organization/Config"
 import Knowledge from "../pages/global/Knowledge"
 import SheltersModule from "../pages/global/Shelters" 
 import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
+import OrganizationCatsPage from "../pages/organization/Cats"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -67,10 +68,11 @@ const AppRouter = () => {
 
         {/* Layout de organizaciones */} 
         <Route element={<PrivateRoute />}>
-          <Route path="/organizaciones" element={<OrganizationsLayout />}>
+          <Route path="/organizations" element={<OrganizationsLayout />}>
             <Route index element={<OrganizationTab />} />
             <Route path=":id" element={<OrganizationDashboard />} />
-            <Route path=":id/configuracion" element={<OrganizationConfig />} />
+            <Route path=":id/settings" element={<OrganizationConfig />} />
+            <Route path=":id/cats" element={<OrganizationCatsPage />} />
           </Route>
         </Route>
 

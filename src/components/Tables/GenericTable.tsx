@@ -231,7 +231,7 @@ export default function GenericTable<T extends Record<string, any>>({
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu
-                    disallowEmptySelection
+                
                     aria-label="Status Filter"
                     closeOnSelect={false}
                     selectedKeys={statusFilter}
