@@ -23,7 +23,7 @@ const CatCard = ({ id, name, imageUrl, location, gender, age }: CatCardProps) =>
           removeWrapper
           src={imageUrl}
           alt={`Foto de ${name}`}
-          className="w-full h-[310px] object-cover"
+          className="w-[300px] h-[310px]  object-cover"
         />
       </CardBody>
 

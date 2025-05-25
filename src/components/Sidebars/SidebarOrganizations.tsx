@@ -35,12 +35,12 @@ const SidebarOrganizations = ({ organization }: SidebarProps) => {
   const baseLinks = [
     {
       label: "Dashboard",
-      href: `/organizaciones/${orgId}`,
+      href: `/organizations/${orgId}`,
       icon: IconLayoutDashboard,
     },
     {
       label: "Configuración",
-      href: `/organizaciones/${orgId}/configuracion`,
+      href: `/organizations/${orgId}/settings`,
       icon: IconSettings,
     },
   ]
@@ -49,22 +49,22 @@ const SidebarOrganizations = ({ organization }: SidebarProps) => {
   const verifiedLinks = [
     {
       label: "Gatos Rescatados",
-      href: `/organizaciones/${orgId}/gatos`,
+      href: `/organizations/${orgId}/cats`,
       icon: IconCat,
     },
     {
       label: "Solicitudes de Adopción",
-      href: `/organizaciones/${orgId}/solicitudes`,
+      href: `/organizations/${orgId}/solicitudes`,
       icon: IconInbox,
     },
     {
       label: "Miembros",
-      href: `/organizaciones/${orgId}/miembros`,
+      href: `/organizations/${orgId}/miembros`,
       icon: IconUsers,
     },
     {
       label: "Donaciones",
-      href: `/organizaciones/${orgId}/donaciones`,
+      href: `/organizations/${orgId}/donaciones`,
       icon: IconBuildingCommunity,
     },
 
@@ -114,7 +114,7 @@ const SidebarOrganizations = ({ organization }: SidebarProps) => {
               <NavLink
                 key={label}
                 to={href}
-                end={href === `/organizaciones/${organization?.organizationId}`} // <-- Solo exacto para dashboard
+                end={href === `/organizations/${organization?.organizationId}`} // <-- Solo exacto para dashboard
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${isActive
                     ? "bg-gray-100 dark:bg-neutral-800 text-primary"
