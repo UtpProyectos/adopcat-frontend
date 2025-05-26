@@ -5,7 +5,8 @@ import PublicLayout from "../layout/PublicLayout"
 import AdminLayout from "../layout/AdminLayout"
 import Cats from "../pages/global/Cats"
 import CatDetail from "../pages/global/CatDetail"
-import Donaciones from "../pages/global/Donaciones";
+import Donaciones from "../pages/global/Donaciones"
+import Planes from "../pages/global/Planes"
 
 
 const AppRouter = () => {
@@ -19,6 +20,7 @@ const AppRouter = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/cats/:id" element={<CatDetail />} />
           <Route path="/donaciones" element={<Donaciones />} />
+           <Route path="/planes" element={<Planes />} />
            
         </Route>
 
