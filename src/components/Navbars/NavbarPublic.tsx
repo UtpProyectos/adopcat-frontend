@@ -15,7 +15,7 @@ const links = [
   { name: "Refugios", href: "/shelters" },
   { name: "Conocimiento", href: "/knowledge" },
   { name: "Proceso Adopción", href: "/adoption-process" },
-  { name: "Planes", href: "/planes" },
+  { name: "Planes", href: "/plans" },
   { name: "FAQ", href: "/faq" },
 ]
 
