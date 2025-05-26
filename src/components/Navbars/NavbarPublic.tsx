@@ -13,6 +13,7 @@ const links = [
   { name: "Home", href: "/" },
   { name: "Cats", href: "/cats" },
   { name: "Proceso Adopción", href: "/proceso-adopcion" },
+  { name: "Tienda", href: "/tienda" },
   { name: "Planes", href: "/planes" },
   { name: "FAQ", href: "/faq" },
 ]
