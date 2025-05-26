@@ -5,8 +5,9 @@ import PublicLayout from "../layout/PublicLayout"
 import AdminLayout from "../layout/AdminLayout"
 import Cats from "../pages/global/Cats"
 import CatDetail from "../pages/global/CatDetail"
-import Donaciones from "../pages/global/Donaciones"
-import Planes from "../pages/global/Planes"
+import Donaciones from "../pages/global/Donaciones/Donaciones"
+import Planes from "../pages/global/Planes/Planes"
+ 
 
 
 const AppRouter = () => {

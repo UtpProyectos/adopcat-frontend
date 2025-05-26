@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AdoptButton from '../../components/Buttons/AdoptButton';
+import { useNavigate } from 'react-router-dom'; 
+import AdoptButton from '../../../components/Buttons/AdoptButton';
 
 const Donaciones = () => {
   const [amount, setAmount] = useState('');
