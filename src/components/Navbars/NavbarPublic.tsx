@@ -216,17 +216,31 @@ const NavbarPublic = () => {
 
             {/* Botones y usuario */}
             <div className="mt-6 flex flex-col gap-3">
-              <AdoptButton label="Dona Aquí" variant="secondary" />
+
+              <AdoptButton
+                label={user?.role?.toUpperCase?.() === 'ROLE_ADMIN' ? "Ir a Admin" : "Dona Aquí"}
+                variant="secondary"
+                className="text-xs lg:text-sm"
+                onPress={() => {
+                  if (user?.role?.toUpperCase?.() === 'ROLE_ADMIN') {
+                    window.location.href = "/admin/dashboard"
+                  } else {
+                    alert("Redirigir a donación")
+                  }
+                }}
+              /> 
+
               <ThemeButton />
               {user ? (
                 <>
                   <NavLink
-                    to="/perfil"
+                    to="/profile"
                     onClick={() => setIsOpen(false)}
                     className="hover:text-primary font-medium text-lg"
                   >
                     Ver perfil
                   </NavLink>
+
                   <button
                     onClick={() => {
                       logout()

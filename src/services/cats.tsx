@@ -51,4 +51,8 @@ export const catService = {
   deleteCat: (id: string) => {
     return api.delete(`/cats/${id}`);
   },
+
+  getAllFeatures:()=>{
+    return api.get("/cats/features");
+  }
 };
