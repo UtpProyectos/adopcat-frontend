@@ -14,8 +14,9 @@ const links = [
   { name: "Cats", href: "/cats" },
   { name: "Refugios", href: "/shelters" },
   { name: "Conocimiento", href: "/knowledge" },
-  { name: "Proceso Adopción", href: "/adoption-process" },
+  { name: "Como adoptar", href: "/adoption-process" },
   { name: "Planes", href: "/plans" },
+  { name: "Tienda", href: "/store" },
   { name: "FAQ", href: "/faq" },
 ]
 
@@ -71,7 +72,7 @@ const NavbarPublic = () => {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center  gap-3 lg:gap-8 relative">
+        <nav className="hidden md:flex items-center  gap-3 lg:gap-6 relative">
           {links.map((link) => (
             <NavLink
               key={link.name}
@@ -98,7 +99,7 @@ const NavbarPublic = () => {
         </nav>
 
         {/* Botones Desktop */}
-        <div className="hidden md:flex items-center gap-2 lg:gap-6">
+        <div className="hidden md:flex items-center gap-2 lg:gap-4">
           <AdoptButton
             label={user?.role?.toUpperCase?.() === 'ROLE_ADMIN' ? "Ir a Admin" : "Dona Aquí"}
             variant="secondary"
