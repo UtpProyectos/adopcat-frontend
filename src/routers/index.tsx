@@ -24,6 +24,9 @@ import Knowledge from "../pages/global/Knowledge"
 import SheltersModule from "../pages/global/Shelters" 
 import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
 import OrganizationCatsPage from "../pages/organization/Cats"
+import Donaciones from "../pages/global/Donaciones/Donaciones"
+import Planes from "../pages/global/Planes/Planes"
+import OnlineStore from "../pages/global/OnlineStore"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -59,7 +62,9 @@ const AppRouter = () => {
           <Route path="/shelters" element={<SheltersModule />} />
           <Route path="/knowledge" element={<Knowledge />} />
           <Route path="/adoption-process" element={<CurvedRoadTimeline />} />
-
+          <Route path="/donaciones" element={<Donaciones />} />
+           <Route path="/plans" element={<Planes />} />
+           <Route path="/store" element={<OnlineStore />} />
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />

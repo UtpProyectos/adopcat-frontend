@@ -366,3 +366,6 @@ const SheltersModule: FC = () => {
 };
 
 export default SheltersModule;
+
+import React from "react";
+export const TipsSection = () => <div />;
