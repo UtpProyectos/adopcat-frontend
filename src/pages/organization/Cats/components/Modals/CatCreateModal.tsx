@@ -68,11 +68,16 @@ export default function CatCreateModal({
 
   // Cargar características desde backend
   useEffect(() => {
+    console.log('useEffect iniciando...');
     const loadFeatures = async () => {
       try {
+        console.log('Intentando cargar características...');
         const res = await catService.getAllFeatures();  
+        console.log('Respuesta del servidor:', res.data);
         setFeatures(res.data);
-      } catch {
+        console.log('Features actualizadas en el estado:', res.data);
+      } catch (error) {
+        console.error('Error al cargar características:', error);
         addToast({ title: "Error", description: "Error cargando características", color: "danger" });
       }
     };
