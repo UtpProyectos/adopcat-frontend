@@ -16,6 +16,7 @@ import {
 import { UploadCloud } from "lucide-react";
 import LocationPickerWithSearch from "../../../../../components/Maps/LocationPickerWithSearch";
 import { catService } from "../../../../../services/cats";
+import { CatResponse } from "../../../../../models/cat";
 
 interface CatCreateModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface CatCreateModalProps {
   onSuccess: () => void;
   organizationId?: string | null;
   createdBy: string;
+  catToEdit?: CatResponse | null;
 }
 
 const sizes = [
@@ -44,6 +46,7 @@ export default function CatCreateModal({
   onSuccess,
   organizationId = null,
   createdBy,
+  catToEdit = null,
 }: CatCreateModalProps) {
   const [form, setForm] = useState({
     name: "",
@@ -68,25 +71,70 @@ export default function CatCreateModal({
 
   // Cargar características desde backend
   useEffect(() => {
-    console.log('useEffect iniciando...');
+ 
     const loadFeatures = async () => {
       try {
-        console.log('Intentando cargar características...');
-        const res = await catService.getAllFeatures();  
-        console.log('Respuesta del servidor:', res.data);
+        const res = await catService.getAllFeatures(); 
         setFeatures(res.data);
-        console.log('Features actualizadas en el estado:', res.data);
       } catch (error) {
-        console.error('Error al cargar características:', error);
         addToast({ title: "Error", description: "Error cargando características", color: "danger" });
       }
     };
     loadFeatures();
   }, []);
 
-  // Generar preview
+  // Precargar datos cuando cambie catToEdit
   useEffect(() => {
-    if (!file) return setPreview(null);
+    if (catToEdit) {
+      setForm({
+        name: catToEdit.name || "",
+        birthDate: catToEdit.birthDate ? new Date(catToEdit.birthDate).toISOString().substring(0, 10) : "",
+        gender: catToEdit.gender || "",
+        size: catToEdit.size || "",
+        healthStatus: catToEdit.healthStatus || "",
+        raza: catToEdit.raza || "",
+        description: catToEdit.description || "",
+        location: catToEdit.location || "",
+        latitude: catToEdit.latitude || 0,
+        longitude: catToEdit.longitude || 0,
+      });
+
+      // Mapear las características seleccionadas a los objetos completos que están en features
+      if (catToEdit.features && features.length > 0) {
+        const selected = features.filter(f =>
+          catToEdit.features?.some(cf => cf.id === f.id)
+        );
+        setSelectedFeatures(selected);
+      } else {
+        setSelectedFeatures([]);
+      }
+
+      setPreview(catToEdit.mainImageUrl || null);
+      setFile(null);
+    } else {
+      // Reset formulario si no hay catToEdit (modo crear)
+      setForm({
+        name: "",
+        birthDate: "",
+        gender: "",
+        size: "",
+        healthStatus: "",
+        raza: "",
+        description: "",
+        location: "",
+        latitude: 0,
+        longitude: 0,
+      });
+      setSelectedFeatures([]);
+      setPreview(null);
+      setFile(null);
+    }
+  }, [catToEdit, features, isOpen]);
+
+
+  // Generar preview para imagen nueva seleccionada
+  useEffect(() => {
+    if (!file) return;
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
     return () => URL.revokeObjectURL(objectUrl);
@@ -138,29 +186,39 @@ export default function CatCreateModal({
 
     try {
       await onCreateCat(dataToSend, file || undefined);
-      addToast({ title: "Éxito", description: "Gato creado correctamente", color: "success" });
+      addToast({
+        title: "Éxito",
+        description: catToEdit ? "Gato actualizado correctamente" : "Gato creado correctamente",
+        color: "success",
+      });
       onSuccess();
       onClose();
 
-      // Reset
-      setForm({
-        name: "",
-        birthDate: "",
-        gender: "",
-        size: "",
-        healthStatus: "",
-        raza: "",
-        description: "",
-        location: "",
-        latitude: 0,
-        longitude: 0,
-      });
-      setSelectedFeatures([]);
-      setFile(null);
-      setPreview(null);
-      setNewFeatureName("");
+      // Reset solo si es creación
+      if (!catToEdit) {
+        setForm({
+          name: "",
+          birthDate: "",
+          gender: "",
+          size: "",
+          healthStatus: "",
+          raza: "",
+          description: "",
+          location: "",
+          latitude: 0,
+          longitude: 0,
+        });
+        setSelectedFeatures([]);
+        setFile(null);
+        setPreview(null);
+        setNewFeatureName("");
+      }
     } catch (error: any) {
-      addToast({ title: "Error", description: error.message || "Error creando gato", color: "danger" });
+      addToast({
+        title: "Error",
+        description: error.message || (catToEdit ? "Error actualizando gato" : "Error creando gato"),
+        color: "danger",
+      });
     } finally {
       setLoading(false);
     }
@@ -169,7 +227,7 @@ export default function CatCreateModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent className="max-w-xl max-h-[80vh] overflow-auto">
-        <ModalHeader>Agregar nuevo gato</ModalHeader>
+        <ModalHeader>{catToEdit ? "Editar gato" : "Agregar nuevo gato"}</ModalHeader>
         <ModalBody className="flex flex-col gap-4">
           <Input label="Nombre *" value={form.name} onValueChange={(v) => handleChange("name", v)} isDisabled={loading} />
           <Input label="Fecha de nacimiento" type="date" value={form.birthDate} onValueChange={(v) => handleChange("birthDate", v)} isDisabled={loading} />
@@ -194,12 +252,11 @@ export default function CatCreateModal({
               const selected = features.filter((f) => Array.from(keys).includes(f.id));
               setSelectedFeatures(selected);
             }}
-            isMultiline
             variant="bordered"
-            renderValue={(items) => (
+            renderValue={(selectedItems) => (
               <div className="flex flex-wrap gap-2">
-                {items.map((item) => (
-                  <Chip key={item.key}>{item.data?.name || item.key}</Chip>
+                {selectedItems.map((item) => (
+                  <Chip key={item.key} size="sm" variant="flat">{item.data?.name || item.key}</Chip>
                 ))}
               </div>
             )}
@@ -210,6 +267,7 @@ export default function CatCreateModal({
               </SelectItem>
             )}
           </Select>
+
 
           {/* Campo para ingresar nueva característica */}
           <Input
@@ -237,7 +295,7 @@ export default function CatCreateModal({
         </ModalBody>
         <ModalFooter>
           <Button variant="flat" onClick={onClose} isDisabled={loading}>Cancelar</Button>
-          <Button color="primary" onClick={handleSubmit} isDisabled={loading}>Crear gato</Button>
+          <Button color="primary" onClick={handleSubmit} isDisabled={loading}>{catToEdit ? "Actualizar gato" : "Crear gato"}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

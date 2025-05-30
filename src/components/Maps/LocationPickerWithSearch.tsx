@@ -12,6 +12,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { LeafletMouseEvent } from "leaflet";
+import { MapIcon, MapPin, Search, SearchCodeIcon } from "lucide-react";
 
 interface LocationPickerWithSearchProps {
   address: string;
@@ -122,7 +123,7 @@ const LocationPickerWithSearch = ({
           Buscar
         </Button>
         <Button color="secondary" onClick={usarUbicacionActual}>
-          Mi ubicación
+          <SearchCodeIcon  size={14} />
         </Button>
       </div>
       <div className="h-56 w-full rounded-xl overflow-hidden border border-gray-300">

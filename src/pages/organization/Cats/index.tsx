@@ -5,9 +5,12 @@ import { useOrganization } from "../../../context/OrganizationContext";
 import { CatResponse } from "../../../models/cat";
 import { addToast, Avatar, Chip } from "@heroui/react";
 import { catService } from "../../../services/cats";
-import CatCreateModal from "./components/Modals/CatCreateModal";
+import CatCreateModal from "./components/Modals/CatCreateModal"; 
 import { useAuth } from "../../../context/AuthContext";
-import { FaMars, FaVenus } from "react-icons/fa";
+import { FaMars, FaVenus } from "react-icons/fa"; 
+import ActionsDropdown from "../../../components/Buttons/ActionsDropdown";
+import UploadImageModal from "./components/Modals/CatUploadImageModal";
+import { Edit2, UploadIcon } from "lucide-react";
 
 export default function OrganizationCatsPage() {
 
@@ -15,14 +18,15 @@ export default function OrganizationCatsPage() {
     const { organization, loading } = useOrganization();
     const [cats, setCats] = useState<CatResponse[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
-
+    const [uploadModalOpen, setUploadModalOpen] = useState(false);
+    const [selectedCatId, setSelectedCatId] = useState<string>("");
+    const [editCatData, setEditCatData] = useState<CatResponse | null>(null);
 
     const fetchCats = async () => {
         if (!organization) return;
         try {
             const res = await catService.getAllCatsOrganization(organization.organizationId);
             setCats(res.data);
-            console.log(res.data);
         } catch (error: any) {
             addToast({
                 title: "Error",
@@ -40,22 +44,44 @@ export default function OrganizationCatsPage() {
 
     const handleCreateCat = async (data: any, file?: File) => {
         try {
-            // Forzar organizationId para que sea siempre la de la organización activa
-            const payload = { ...data, organizationId: organization?.organizationId };
+          const payload = { ...data, organizationId: organization?.organizationId };
+          if (editCatData && editCatData.catId) {
+            // Actualizar gato con file (si existe)
+            await catService.updateCat(editCatData.catId, payload, file);
+            setEditCatData(null);
+          } else {
+            // Crear gato nuevo
             await catService.createCat(payload, file);
-            fetchCats();
-            setModalOpen(false);
+          }
+          fetchCats();
+          setModalOpen(false);
         } catch (error: any) {
-            addToast({
-                title: "Error",
-                description: error?.response?.data?.message || "Error creando gato",
-                color: "danger",
-            });
+          addToast({
+            title: "Error",
+            description:
+              error?.response?.data?.message ||
+              (editCatData ? "Error actualizando gato" : "Error creando gato"),
+            color: "danger",
+          });
         }
+      };
+
+    const openUploadModal = (catId: string) => {
+        setSelectedCatId(catId);
+        setUploadModalOpen(true);
+    };
+
+    const openEditModal = (cat: CatResponse) => {
+        setEditCatData(cat);
+        setModalOpen(true);
+    };
+
+    const refreshCats = () => {
+        fetchCats();
     };
 
     const columns: Column<CatResponse>[] = [
- 
+
         { name: "Imagen", uid: "mainImageUrl", render: (cat: CatResponse) => <Avatar radius="sm" src={cat.mainImageUrl || ""} /> },
         { name: "Nombre", uid: "name", sortable: true },
         {
@@ -85,12 +111,35 @@ export default function OrganizationCatsPage() {
             render: (cat) => (cat.birthDate ? new Date(cat.birthDate).toLocaleDateString() : ""),
         },
         { name: "Estado de salud", uid: "healthStatus" },
-        { name: "Estado", uid: "status",
+        {
+            name: "Estado", uid: "status",
             render: (cat) => {
                 const status = cat.status?.toUpperCase() || "sin estado";
                 const color = status === "ADOPTED" ? "success" : status === "AVAILABLE" ? "warning" : "danger";
                 return <Chip color={color} size="sm" variant="flat">{status}</Chip>;
             },
+        },
+        {
+            name: "Acciones",
+            uid: "actions",
+            render: (cat) => (
+              <ActionsDropdown
+                actions={[
+                  {
+                    key: "edit",
+                    label: "Editar",
+                    icon: <Edit2 size={14} />, // Cambia por icono que gustes
+                    onClick: () => openEditModal(cat),
+                  },
+                  {
+                    key: "upload",
+                    label: "Subir imágenes",
+                    icon: <UploadIcon size={14} />, // Cambia por icono que gustes
+                    onClick: () => openUploadModal(cat.catId),
+                  },
+                ]}
+              />
+            ),
         },
     ];
 
@@ -104,8 +153,11 @@ export default function OrganizationCatsPage() {
                 columns={columns}
                 data={cats}
                 button_label="Agregar gato"
-                onAddNew={() => setModalOpen(true)}
-                initialVisibleColumns={["mainImageUrl","name", "gender", "birthDate", "healthStatus", "status"]}
+                onAddNew={() => {
+                    setEditCatData(null); // Reset edición para crear nuevo
+                    setModalOpen(true);
+                }}
+                initialVisibleColumns={["mainImageUrl", "name", "gender", "birthDate", "healthStatus", "status"]}
                 initialRowsPerPage={10}
                 filterKeys={["name", "gender", "location"]}
                 statusOptions={[
@@ -117,9 +169,9 @@ export default function OrganizationCatsPage() {
                 ]}
                 statusColumnKey="status"
                 showStatusFilter={true}
-                
+
             />
- 
+
             <CatCreateModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
@@ -127,6 +179,14 @@ export default function OrganizationCatsPage() {
                 onSuccess={fetchCats}
                 organizationId={organization?.organizationId || null}
                 createdBy={user?.userId || ""}
+               catToEdit={editCatData} // pasa el gato para editar si hay
+            />
+
+            <UploadImageModal
+                isOpen={uploadModalOpen}
+                onClose={() => setUploadModalOpen(false)}
+                catId={selectedCatId}
+                onUploadSuccess={refreshCats}
             />
 
         </div>

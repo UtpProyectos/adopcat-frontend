@@ -5,18 +5,31 @@ export const catService = {
    * Crea un nuevo gato
    */
   createCat: (data: any, file?: File) => {
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("cat", new Blob([JSON.stringify(data)], { type: "application/json" }));
-  if (file) {
-    formData.append("file", file);
-  }
+    formData.append("cat", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    if (file) {
+      formData.append("file", file);
+    }
 
-  console.log("file:",file);  
-  return api.post("/cats", formData); // No establezcas aquí el header Content-Type
-},
+    console.log("file:", file);
+    return api.post("/cats", formData); // No establezcas aquí el header Content-Type
+  },
 
-
+  updateCat: (id: string, data: any, file?: File) => {
+    const formData = new FormData();
+  
+    formData.append("cat", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    if (file) {
+      formData.append("file", file);
+    }
+  
+    return api.put(`/cats/${id}`, formData, {
+      // No pongas Content-Type, axios lo maneja solo
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  
 
 
   /**
@@ -28,7 +41,7 @@ export const catService = {
     return api.get("/cats/organization", { params });
   },
 
-  getAllCats: () => { 
+  getAllCats: () => {
     return api.get("/cats");
   },
   /**
@@ -37,14 +50,7 @@ export const catService = {
   getCatById: (id: string) => {
     return api.get(`/cats/${id}`);
   },
-
-  /**
-   * Actualiza un gato
-   */
-  updateCat: (id: string, data: any) => {
-    return api.put(`/cats/${id}`, data);
-  },
-
+ 
   /**
    * Elimina un gato
    */
@@ -52,7 +58,17 @@ export const catService = {
     return api.delete(`/cats/${id}`);
   },
 
-  getAllFeatures:()=>{
+  getAllFeatures: () => {
     return api.get("/cats/features");
-  }
+  },
+
+  uploadCatPhoto: (catId: string, file: File, onProgress?: (progressEvent: any) => void) => {
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    return api.post(`/cats/${catId}/photos`, formData, {
+      onUploadProgress: onProgress
+    });
+  },
+  
 };

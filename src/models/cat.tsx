@@ -1,5 +1,9 @@
-import { CatFeatureResponse } from "./CatFeature";
+import { CatFeatureResponse } from "./catFeature";
 import { User } from "./user";
+
+interface CatPhoto {
+  url: string;
+}
 
 export interface CatResponse {
   catId: string;
@@ -22,5 +26,6 @@ export interface CatResponse {
   adoptedAt?: string | null;         // ISO datetime string
   adoptionRequestId?: string | null;
   mainImageUrl?: string | null;
+  photos?: CatPhoto[];
   features?: CatFeatureResponse[] | null;
 }
