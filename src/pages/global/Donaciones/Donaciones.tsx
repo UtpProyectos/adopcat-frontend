@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+// import { useNavigate } from 'react-router-dom'; 
 import AdoptButton from '../../../components/Buttons/AdoptButton';
 
 const Donaciones = () => {
   const [amount, setAmount] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleDonation = (e: React.FormEvent) => {
     e.preventDefault();

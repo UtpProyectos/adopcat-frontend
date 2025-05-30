@@ -6,7 +6,7 @@ import ContainerHeader from '../../../components/Containers/ContainerHeader';
 import { Breadcrumbs, BreadcrumbItem } from '@heroui/breadcrumbs';
 import { NavLink } from 'react-router-dom';
 import CatCatalogo from '../../../assets/cats/cat-catalogo.png'; 
-import Alert from '../../../components/Alerts/Alert';
+
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[] | null>(null);

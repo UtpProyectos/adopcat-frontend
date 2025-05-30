@@ -12,7 +12,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { LeafletMouseEvent } from "leaflet";
-import { MapIcon, MapPin, Search, SearchCodeIcon } from "lucide-react";
+import { SearchCodeIcon } from "lucide-react";
 
 interface LocationPickerWithSearchProps {
   address: string;

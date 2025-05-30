@@ -15,8 +15,7 @@ export const tipSources = [
   "https://www.hogarperu.org/registro-gatos"
 ];
 
-// Correcto en un archivo .tsx
-import React, { useState } from "react";
+ 
 
 const tabs = [
   { label: "Tab 1", key: "tab1" },
@@ -24,11 +23,10 @@ const tabs = [
 ];
 
 const MyComponent = () => {
-  const [activeTab, setActiveTab] = useState("tab1");
   return (
     <div>
       {tabs.map((tab) => (
-        <button key={tab.key} onClick={() => setActiveTab(tab.key)}>
+        <button key={tab.key}>
           {tab.label}
         </button>
       ))}

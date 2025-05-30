@@ -1,5 +1,5 @@
 import React from "react";
-import { tipsRefugioFree, tipsRefugioPremium, tipSources } from "./tipsData";
+import { tipsRefugioFree, tipsRefugioPremium } from "./tipsData";
 
 type TabKey = "articulos" | "videos" | "glosario" | "mitos" | "recursos";
 type PlanType = "free" | "premium";
@@ -11,14 +11,14 @@ interface TabsContentProps {
   activeTab: TabKey;
 }
 
-export const TipCard = ({ tip, index, onClick }: any) => (
+export const TipCard = ({ tip, onClick }: any) => (
   <div onClick={onClick} style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}>
     <strong>{tip.title}</strong>
     <div>{tip.desc}</div>
   </div>
 );
 
-export const TipModal = ({ tip, index, onClose }: any) => (
+export const TipModal = ({ tip, onClose }: any) => (
   <div style={{ background: "#fff", border: "1px solid #000", padding: 16, position: "fixed", top: 100, left: "30%" }}>
     <h2>{tip.title}</h2>
     <p>{tip.more}</p>
