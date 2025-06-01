@@ -101,7 +101,6 @@ const Cats = () => {
 
 
       </section>
-
     </div>
   )
 }

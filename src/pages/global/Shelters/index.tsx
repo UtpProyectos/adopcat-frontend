@@ -1,6 +1,7 @@
 import { useState, ReactNode } from "react";
 import type { FC } from "react";
 import { motion } from "framer-motion";
+import Footer from "../../../components/Footer";
 
 const tabs = [
   { label: "Listado", key: "listado" },
@@ -361,6 +362,7 @@ const SheltersModule: FC = () => {
       <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl shadow-2xl p-8 min-h-[350px] animate-fade-in">
         {content[activeTab]}
       </div>
+      <Footer />
     </div>
   );
 };

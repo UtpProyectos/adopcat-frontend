@@ -1,10 +1,11 @@
 import React, { useState, ReactNode } from "react";
-
+import Footer from "../../../components/Footer";
 const tabs = [
   { label: "Artículos y Consejos", key: "articulos" },
-  { label: "Recursos y Videos", key: "recursos" }, // Unificada
+  { label: "Recursos y Videos", key: "recursos" }, // Esta Unificada
   { label: "Glosario Felino", key: "glosario" },
   { label: "Mitos y Realidades", key: "mitos" },
+  
 ];
 
 type TabKey = "articulos" | "recursos" | "glosario" | "mitos";
@@ -286,20 +287,35 @@ const Knowledge = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("articulos");
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
-      <h1 className="text-3xl md:text-5xl font-extrabold mb-8 text-primary text-center drop-shadow-lg">Módulo de Conocimiento Felino</h1>
+    <div className="max-w-4xl mx-auto py-10 px-2 sm:px-4">
+      <h1
+        className="text-xl sm:text-2xl md:text-5xl font-extrabold mb-4 text-primary text-center drop-shadow-lg leading-tight break-words"
+        style={{ wordBreak: "break-word" }}
+      >
+        Módulo de Conocimiento Felino
+      </h1>
+      <h2
+        className="hidden sm:block text-base sm:text-lg md:text-xl font-bold text-primary text-center mb-6 tracking-wide"
+        style={{ letterSpacing: "0.08em" }}
+      >
+        LIMA PERÚ
+      </h2>
       <div className="flex flex-wrap gap-2 mb-8 justify-center">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key as TabKey)}
-            className={`px-4 py-2 rounded-full border-2 font-semibold text-sm md:text-base shadow-md transition-all duration-200 ${activeTab === tab.key ? "bg-primary text-white border-primary scale-105" : "bg-white text-primary border-primary hover:bg-primary/10"}`}
+            className={`px-2 py-1 rounded-full border-2 font-semibold text-xs sm:text-sm md:text-base shadow-md transition-all duration-200 ${activeTab === tab.key ? "bg-primary text-white border-primary scale-105" : "bg-white text-primary border-primary hover:bg-primary/10"}`}
+            style={{ maxWidth: "95vw", whiteSpace: "normal", wordBreak: "break-word" }}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      {content[activeTab]}
+      <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl shadow-2xl p-8 min-h-[350px] animate-fade-in">
+        {content[activeTab]}
+      </div>
+      <Footer />
     </div>
   );
 };
