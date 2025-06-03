@@ -79,8 +79,8 @@ const NavbarPublic = () => {
               to={link.href}
               className={({ isActive }) =>
                 isActive
-                  ? "text-primary relative font-bold text-sm lg:text-lg"
-                  : "text-black relative font-medium dark:text-white text-sm lg:text-lg hover:text-primary"
+                  ? "text-primary relative font-bold text-sm lg:text-[1rem]"
+                  : "text-black relative font-medium dark:text-white text-sm lg:text-[1rem] hover:text-primary"
               }
             >
               {({ isActive }) => (
@@ -144,14 +144,14 @@ const NavbarPublic = () => {
               <NavLink
                 to="/login"
                 state={{ register: true }}
-                className="hover:text-primary font-medium text-sm lg:text-lg" >
+                className="hover:text-primary font-medium text-sm lg:text-[1rem]" >
                 Sign up
               </NavLink>
 
               <NavLink
                 to="/login"
                 state={{ register: false }}
-                className="hover:text-primary font-medium text-sm lg:text-lg"   >
+                className="hover:text-primary font-medium text-sm lg:text-[1rem]"   >
                 Login
               </NavLink>
 

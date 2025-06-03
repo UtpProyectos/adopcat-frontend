@@ -2,8 +2,7 @@ import {
     IconLayoutDashboard,
     IconUsers,
     IconCat,
-    IconBuildingCommunity,
-    IconInbox,
+    IconBuildingCommunity, 
     IconLogout,
     IconChevronLeft,
     IconChevronRight,
@@ -12,13 +11,13 @@ import {
   import { NavLink, useNavigate } from "react-router-dom"
   import { useAuth } from "../../context/AuthContext"
   import { useState } from "react"
+import { Award } from "lucide-react"
   
   const adminLinks = [
     { label: "Dashboard", href: "/admin/dashboard", icon: IconLayoutDashboard },
     { label: "Usuarios", href: "/admin/users", icon: IconUsers },
-    { label: "Gatos", href: "/admin/cats", icon: IconCat },
     { label: "Organizaciones", href: "/admin/organizaciones", icon: IconBuildingCommunity },
-    { label: "Solicitudes", href: "/admin/solicitudes", icon: IconInbox },
+    { label: "Donaciones", href: "/admin/donations", icon: Award  },
   ]
   
   const SidebarAdmin = () => {

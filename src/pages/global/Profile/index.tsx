@@ -14,8 +14,7 @@ import InfoTab from "./components/Tabs/InfoTab";
 import CatsTab from "./components/Tabs/CatsTab";
 import RequestTab from "./components/Tabs/RequestTab";
 import { useEffect, useState } from "react";
-import OrganizationTab from "./components/Tabs/OrganizationTab";
-import MyPage from "./components/Tabs/Pruebatab";
+import OrganizationTab from "./components/Tabs/OrganizationTab"; 
 import { UserProfile } from "../../../models/user";
 
 const Profile = () => {
@@ -24,7 +23,7 @@ const Profile = () => {
 
   const [fullProfile, setFullProfile] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState("info");
-
+  
   // Leer tab desde query param y sincronizar estado del tab activo
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -51,8 +50,7 @@ const Profile = () => {
     { id: "mis-gatos", label: "Mis Gatos", component: <CatsTab /> },
     { id: "solicitudes", label: "Solicitudes", component: <RequestTab /> },
     { id: "planes", label: "Planes", component: <RequestTab /> },
-    { id: "donaciones", label: "Donaciones", component: <RequestTab /> },
-    { id: "rescatados", label: "Rescatados", component: <MyPage /> },
+    { id: "donaciones", label: "Donaciones", component: <RequestTab /> }, 
     { id: "organizaciones", label: "Organizaciones", component: <OrganizationTab /> },
   ];
 
@@ -73,7 +71,7 @@ const Profile = () => {
   return (
     <div className="container mx-auto flex flex-col items-center gap-8 pt-30">
       {/* Perfil */}
-      <section className="flex items-center justify-center gap-6 w-full m-auto max-w-6xl">
+      <section className="flex items-center justify-center gap-6 w-full m-auto max-w-6xl " >
         <img
           src={profileImage}
           alt="Foto de perfil"
@@ -132,21 +130,25 @@ const Profile = () => {
       </section>
 
       {/* Tabs */}
-      <section className="w-full px-4 sm:px-6 md:px-8">
-        <div className="flex w-full flex-col items-center">
+      <section className="w-full px-4 sm:px-6 md:px-8 max-w-6xl ">
+        <div className="flex w-full flex-col items-center ">
           <Tabs
             aria-label="Tabs de perfil"
             items={filteredTabs}
             radius="lg"
-            className="w-full flex items-center justify-center"
+            className="w-full flex items-center justify-center "
             selectedKey={activeTab}  // Aquí está el cambio importante
             onSelectionChange={(key) => setActiveTab(String(key))}
           >
             {(item) => (
-              <Tab key={item.id} title={item.label}>
-                <Card className="shadow-primary mt-4 w-full max-w-6xl px-5 py-5 rounded-4xl">
-                  <CardBody>{item.component}</CardBody>
+              <Tab key={item.id} title={item.label} className="w-full md:w-auto">
+                <Card className="shadow-primary mt-4 w-full max-w-full px-1 py-1 rounded-4xl">
+                 <CardBody className="w-full max-w-full flex-1 overflow-x-auto overflow-y-auto min-h-0">
+                    {item.component}
+                  </CardBody>
                 </Card>
+
+
               </Tab>
             )}
           </Tabs>

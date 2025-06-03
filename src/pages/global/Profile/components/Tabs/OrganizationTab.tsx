@@ -4,6 +4,8 @@ import OrganizationRequestModal from "../Modals/OrganizationRequestModal"
 import { organizationService } from "../../../../../services/organization"
 import { Chip, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, addToast } from "@heroui/react"
 import { OrganizationResponse } from "../../../../../models/organization"
+import { useAuth } from "../../../../../context/AuthContext"
+import { CircleCheck, CircleX } from "lucide-react"
 
 const statusOptions: StatusOption[] = [
   { name: "SOLICITADO", uid: "SOLICITADO" },
@@ -23,9 +25,12 @@ export default function OrganizationTab() {
   const [deleteConfirmName, setDeleteConfirmName] = useState("")
   const [deleting, setDeleting] = useState(false)
 
+  const { user } = useAuth()
+
+
   const fetchOrganizations = async () => {
     try {
-      const res = await organizationService.getAll()
+      const res = await organizationService.getByUserId(user?.userId || "")
       setData(res.data)
     } catch (error) {
       console.error("Error cargando organizaciones", error)
@@ -105,7 +110,12 @@ export default function OrganizationTab() {
     {
       name: "Verificado",
       uid: "verified",
-      render: (org) => (org.verified ? "✅" : "❌"),
+      render: (org) => (
+        <Chip startContent={org.verified ? <CircleCheck size={14} /> : <CircleX size={14} />}
+          color={org.verified ? "success" : "danger"} size="sm" variant="flat">
+          {org.verified ? "Sí" : "No"}
+        </Chip>
+      ),
       align: "center",
     },
     {
@@ -129,21 +139,22 @@ export default function OrganizationTab() {
   ]
 
   return (
-    <>
-      <GenericTable<OrganizationResponse>
-        columns={columns}
-        data={data}
-        statusOptions={statusOptions}
-        initialVisibleColumns={["name", "status", "state", "verified", "actions"]}
-        initialSort={{ column: "name", direction: "ascending" }}
-        initialRowsPerPage={5}
-        button_label="Solicitar"
-        onAddNew={handleAddNew}
-        showStatusFilter={true}
-        statusColumnKey="status"
-        emptyMessage="No hay organizaciones registradas"
-        filterKeys={["name", "status"]}
-      />
+    <> 
+        <GenericTable<OrganizationResponse>
+          columns={columns}
+          data={data}
+          statusOptions={statusOptions}
+          initialVisibleColumns={["name", "status", "state", "verified", "actions"]}
+          initialSort={{ column: "name", direction: "ascending" }}
+          initialRowsPerPage={5}
+          button_label="Solicitar"
+          onAddNew={handleAddNew}
+          showStatusFilter={true}
+          statusColumnKey="status"
+          emptyMessage="No hay organizaciones registradas"
+          filterKeys={["name", "status"]}
+        /> 
+
 
       <OrganizationRequestModal
         isOpen={isModalOpen}

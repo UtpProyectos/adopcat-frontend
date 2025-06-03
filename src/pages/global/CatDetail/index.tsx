@@ -1,23 +1,97 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { catService } from "../../../../services/cats";
-import ContainerHeader from "../../../../components/Containers/ContainerHeader";
+import { catService } from "../../../services/cats";
+import ContainerHeader from "../../../components/Containers/ContainerHeader";
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 import { NavLink } from "react-router-dom";
-import AdoptButton from "../../../../components/Buttons/AdoptButton";
-import LoadingSpinner from "../../../../components/common/LoadingSpinner";
-import CatCatalogoOption from "../../../../assets/cats/cat-catalogo-option.png";
-import { CatResponse } from "../../../../models/cat";
-import { Button } from "@heroui/react";
+import AdoptButton from "../../../components/Buttons/AdoptButton";
+import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import CatCatalogoOption from "../../../assets/cats/cat-catalogo-option.png";
+import { CatResponse } from "../../../models/cat";
+import { addToast, Button, cn } from "@heroui/react";
 import { MapPin } from "lucide-react";
-import { CatFeatureResponse } from "../../../../models/catFeature";
-import ImageCarousel from "../../../../components/Carrousel/ImageCarousel";
+import { CatFeatureResponse } from "../../../models/catFeature";
+import ImageCarousel from "../../../components/Carrousel/ImageCarousel";
+import AdoptionRequestModal from "./components/Modals/AdoptionRequestModal";
+import { adoptionService } from "../../../services/adoption";
 
 const CatDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [cat, setCat] = useState<CatResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (formData: FormData) => {
+    if (!cat?.catId) return;
+
+    setLoading(true);
+    try {
+      await adoptionService.submitRequest(cat.catId, {
+        reason: formData.get("reason") as string,
+        experience: formData.get("experience") as string,
+        residenceType: formData.get("residenceType") as string,
+        reactionPlan: formData.get("reactionPlan") as string,
+        followUpConsent: formData.get("followUpConsent") as string,
+        receipt: formData.get("receipt") as File,
+        homePhoto: formData.get("homePhoto") as File,
+        commitment: formData.get("commitment") as File,
+      });
+
+      addToast({
+        title: "¡Solicitud enviada!",
+        description: "Tu solicitud de adopción fue registrada correctamente.",
+        timeout: 10000,
+        color: "success",
+        shouldShowTimeoutProgress: true,
+        classNames: {
+          base: cn([ 
+            "flex flex-col items-start", 
+          ]), 
+        },
+        endContent: (
+          <div className="ms-11 my-2 flex gap-x-2">
+            <Button
+              color="primary"
+              size="sm"
+              variant="bordered"
+              onClick={() => navigate("/profile?tab=solicitudes")}
+            >
+              Ver Solicitudes
+            </Button>
+            <Button
+              className="underline-offset-2"
+              color="primary"
+              size="sm"
+              variant="light"
+            >
+              Más tarde
+            </Button>
+          </div>
+        ),
+      });
+      
+      
+
+      setIsModalOpen(false); // cerrar modal
+
+    } catch (error) {
+      console.error("❌ Error al enviar solicitud:", error);
+      addToast
+      ({
+        title: "Error",
+        description: "No se pudo enviar la solicitud. Intenta nuevamente.",
+        timeout: 3000,
+        color: "danger",
+        shouldShowTimeoutProgress: true,
+      }); 
+      
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const formatAge = (birthDateStr?: string | null) => {
     if (!birthDateStr) return "Desconocida";
@@ -71,7 +145,6 @@ const CatDetail = () => {
     catService.getCatById(id)
       .then(res => {
         setCat(res.data as CatResponse);
-        console.log(res.data);
 
       })
       .catch(err => {
@@ -82,13 +155,12 @@ const CatDetail = () => {
 
   const images = cat
     ? [
-        cat.mainImageUrl || "",
-        ...(cat.photos?.map(photo => photo.url) || [])
-      ].filter(url => !!url)
+      cat.mainImageUrl || "",
+      ...(cat.photos?.map(photo => photo.url) || [])
+    ].filter(url => !!url)
     : [CatCatalogoOption];
 
 
-      console.log(images);
 
   if (loading) {
     return <LoadingSpinner message="Cargando detalles del gato..." />;
@@ -126,7 +198,7 @@ const CatDetail = () => {
               <h1 className="text-4xl md:text-5xl mb-4 leading-relaxed border-b-1 border-b-gray-300">
                 Hola , soy <span className="font-bold">{cat.name}</span>
               </h1>
-              <div className="flex flex-col text-md text-gray-800 gap-2 border-b-1 border-b-gray-300 pb-4">
+              <div className="flex flex-col text-md text-gray-800 gap-1 border-b-1 border-b-gray-300 pb-4">
                 <p><span className="font-semibold mr-14">Edad:  </span>  {formatAge(cat.birthDate)} </p>
                 <p><span className="font-semibold mr-9">Género:</span> {cat.gender === "FEMALE" ? "Hembra" : cat.gender === "MALE" ? "Macho" : cat.gender || "Desconocido"} </p>
                 <p><span className="font-semibold mr-7">Tamaño:</span> {formatSize(cat.size)} </p>
@@ -143,7 +215,7 @@ const CatDetail = () => {
               </div>
 
               {/* Sección de características */}
-              <div className="mt-1">
+              <div className="mt-1 border-b-1 border-b-gray-300 pb-4">
                 <p className="font-semibold mb-2">Yo soy …</p>
                 <div className="grid grid-cols-2 gap-2 text-gray-600">
                   {cat.features && cat.features.length > 0 ? (
@@ -167,9 +239,14 @@ const CatDetail = () => {
                   )}
                 </div>
               </div>
+              <div className="flex flex-col text-md text-gray-800 gap-1">
+                <p className="font-semibold mb-2">Descripción</p>
+                <p>{cat.description}</p>
+              </div>
 
               <div className="flex gap-10 mt-4">
-                <AdoptButton label="Adóptame" />
+                <AdoptButton label="Adóptame" onPress={() => setIsModalOpen(true)} />
+
                 <AdoptButton variant="secondary" label="Dona Aquí" />
               </div>
             </div>
@@ -180,6 +257,14 @@ const CatDetail = () => {
             <ImageCarousel images={images} />
           </div>
         }
+      />
+
+      <AdoptionRequestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        catName={cat.name}
+        onSubmit={handleSubmit}
+        loading={loading}
       />
     </div>
   );
