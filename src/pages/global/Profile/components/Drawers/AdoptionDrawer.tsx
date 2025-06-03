@@ -25,8 +25,7 @@ import { AdoptionResponse } from "../../../../../models/adoption";
       if (!request) return;
       const fetchData = async () => {
         setLoading(true);
-         
-         
+        setDetails(request);
         setLoading(false);
       };
       fetchData();

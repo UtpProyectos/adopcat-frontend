@@ -1,7 +1,6 @@
 import {
     IconLayoutDashboard,
-    IconUsers,
-    IconCat,
+    IconUsers, 
     IconBuildingCommunity, 
     IconLogout,
     IconChevronLeft,
