@@ -108,5 +108,19 @@ export const userService = {
   getUsers: () => {
     return api.get("/users");
   },
+  createAdmin: (data: {
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+  }) => {
+    return api.post("/users/admin", data)
+  },
+  
+  updateUserEnabled: (userId: string, enabled: boolean) => {
+    return api.put(`/users/${userId}/enabled`, null, {
+      params: { enabled },
+    })
+  }
   
 }

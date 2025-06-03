@@ -1,4 +1,5 @@
 import { CatFeatureResponse } from "./catFeature";
+import { OrganizationResponse } from "./organization";
 import { User } from "./user";
 
 interface CatPhoto {
@@ -20,7 +21,7 @@ export interface CatResponse {
   status?: string | null;
   publishedAt?: string | null;       // ISO datetime string
   createdBy?: User | null;
-  organizationId?: string | null;
+  organization?: OrganizationResponse | null;
   sentToOrg?: string | null;
   adoptedBy?: string | null;
   adoptedAt?: string | null;         // ISO datetime string

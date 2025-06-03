@@ -17,7 +17,7 @@ const ActionsDropdown: React.FC<ActionsDropdownProps> = ({ actions }) => {
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
-        <Button variant="light" size="sm" aria-label="Opciones">
+        <Button variant="light" size="sm" aria-label="Opciones" >
           ⋮
         </Button>
       </DropdownTrigger>

@@ -19,3 +19,20 @@ export interface UserProfile {
   phoneVerified: boolean
   adminApproved: boolean
 }
+
+export interface UserResponse {
+  userId: string
+  firstName: string
+  lastName: string
+  email: string
+  role: string
+  enabled: boolean
+  profilePhoto?: string
+  verified: boolean
+  dni: string
+  phoneNumber: string
+  address: string
+  emailVerified: boolean
+  phoneVerified: boolean
+  adminApproved: boolean
+}
