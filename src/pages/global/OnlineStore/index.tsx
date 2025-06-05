@@ -1,5 +1,5 @@
 import ProductList from "./ProductList";
-import VerificationAlert from "../../../components/Alerts/VerificationAlert";
+import VerificationAlert from "../../../components/Alerts/Alert";
 
 const OnlineStore = () => {
   return (
