@@ -343,8 +343,30 @@ const SheltersModule: FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4">
-      <h1 className="text-4xl font-extrabold mb-8 text-primary text-center drop-shadow-lg">Refugios Felinos en Lima, Perú</h1>
+    <div className="max-w-6xl mx-auto py-10 px-2 sm:px-4">
+      <h1
+        className="
+          font-extrabold
+          mb-8
+          text-primary
+          text-center
+          drop-shadow-lg
+          px-2
+          py-4
+          leading-tight
+          break-words
+          w-full
+          max-w-full
+        "
+        style={{
+          wordBreak: "break-word",
+          fontSize: "clamp(0.95rem, 4vw, 2.2rem)", // Mucho más pequeño en móvil
+          lineHeight: 1.15,
+        }}
+      >
+        Refugios Felinos
+        <span className="block sm:inline">en Lima, Perú</span>
+      </h1>
       <div className="flex flex-wrap gap-3 mb-10 justify-center">
         {tabs.map((tab) => (
           <button
@@ -362,7 +384,7 @@ const SheltersModule: FC = () => {
       <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl shadow-2xl p-8 min-h-[350px] animate-fade-in">
         {content[activeTab]}
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };
