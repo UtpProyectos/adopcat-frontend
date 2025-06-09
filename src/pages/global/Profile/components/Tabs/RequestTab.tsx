@@ -44,6 +44,8 @@ const RequestTab = () => {
       .finally(() => setLoading(false));
   };
 
+  console.log(requests);
+  
   useEffect(() => {
     fetchRequests();
   }, [user?.userId]);

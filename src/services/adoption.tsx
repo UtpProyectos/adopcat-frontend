@@ -39,9 +39,10 @@ export const adoptionService = {
   /**
    * 🏠 Ver solicitudes de la organización autenticada
    */
-  getOrgRequests: () => {
-    return api.get<AdoptionResponse[]>("/adoptions/organization")
-  },
+  getOrgRequests: (organizationId: string) => {
+    return api.get<AdoptionResponse[]>(`/adoptions/organization/${organizationId}`);
+  }
+  ,
 
   /**
    * ✅ Cambiar estado de solicitud (ADMIN / RESCATISTA)

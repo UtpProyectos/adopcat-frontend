@@ -8,12 +8,14 @@ import {
   Button,
   Textarea,
   Spinner,
-  addToast, 
+  addToast,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
 import { UserProfile } from "../../../../../models/user";
-import { userService } from "../../../../../services/user"; 
+import { userService } from "../../../../../services/user";
 
 interface Props {
   isOpen: boolean;
@@ -37,12 +39,12 @@ export default function AdoptionRequestModal({
   const [reason, setReason] = useState("");
   const [experience, setExperience] = useState("");
   const [residenceType, setResidenceType] = useState("");
-  const [reactionPlan, setReactionPlan] = useState("");
-  const [followUpConsent, setFollowUpConsent] = useState("");
+  const [reactionPlan, setReactionPlan] = useState(""); 
   const [receipt, setReceipt] = useState<File | null>(null);
   const [homePhoto, setHomePhoto] = useState<File | null>(null);
   const [commitment, setCommitment] = useState<File | null>(null);
- 
+const [followUpConsent, setFollowUpConsent] = useState<string>("");
+
   // Estado de errores
   const [errors, setErrors] = useState({
     reason: false,
@@ -86,7 +88,7 @@ export default function AdoptionRequestModal({
         shouldShowTimeoutProgress: true,
       });
 
-      
+
       return;
     }
 
@@ -102,7 +104,7 @@ export default function AdoptionRequestModal({
     formData.append("catName", catName);
 
     try {
-      await onSubmit(formData); 
+      await onSubmit(formData);
       handleClose();
     } catch (error) {
       addToast({
@@ -190,14 +192,18 @@ export default function AdoptionRequestModal({
             isInvalid={errors.reactionPlan}
             errorMessage={errors.reactionPlan ? "Este campo es obligatorio." : ""}
           />
-
-          <Input
-            label="¿Aceptas visitas de seguimiento del refugio? (Sí / No)"
+          <Select
+            label="¿Aceptas visitas de seguimiento del refugio?"
+            placeholder="Selecciona una opción"
             value={followUpConsent}
             onChange={(e) => setFollowUpConsent(e.target.value)}
             isInvalid={errors.followUpConsent}
             errorMessage={errors.followUpConsent ? "Este campo es obligatorio." : ""}
-          />
+          >
+            <SelectItem key="true" textValue="Sí">Sí</SelectItem>
+            <SelectItem key="false" textValue="No">No</SelectItem>
+          </Select>
+
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
             <Input

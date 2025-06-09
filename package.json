@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.0-beta.2",
+    "@radix-ui/react-slot": "^1.2.3",
     "@react-oauth/google": "^0.12.1",
     "@tabler/icons-react": "^3.33.0",
     "@tailwindcss/cli": "^4.1.3",
     "@tailwindcss/vite": "^4.1.3",
     "adopcat-frontend": "file:",
     "axios": "^1.8.4",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.9.7",
     "leaflet": "^1.9.4",
@@ -28,12 +30,13 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.5.0",
     "swiper": "^11.2.8",
-    "tailwind-merge": "^3.2.0",
+    "tailwind-merge": "^3.3.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/leaflet": "^1.9.18",
+    "@types/node": "^22.15.30",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/swiper": "^5.4.3",
@@ -45,6 +48,7 @@
     "globals": "^15.15.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.3",
+    "tw-animate-css": "^1.3.4",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"
