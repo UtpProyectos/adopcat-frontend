@@ -3,19 +3,16 @@ import Footer from "../../../components/Footer";
 
 const tabs = [
   { label: "Artículos y Consejos", key: "articulos" },
-  { label: "Recursos y Videos", key: "recursos" }, // Esta Unificada
+  { label: "Recursos y Videos", key: "recursos" },
   { label: "Glosario Felino", key: "glosario" },
   { label: "Mitos y Realidades", key: "mitos" },
-  
 ];
 
 type TabKey = "articulos" | "recursos" | "glosario" | "mitos";
 type PlanType = "free" | "premium";
 
-// Simulación de plan del usuario (cámbialo a "premium" para probar)
 const userPlan = "free" as PlanType;
 
-// Tips para tarjetas interactivas
 const tipsRefugioFree = [
   { title: "Esteriliza a todos los gatos", desc: "Evita la sobrepoblación y mejora la salud general del refugio." },
   { title: "Mantén áreas separadas", desc: "Distingue zonas para gatos sanos, enfermos y en cuarentena." },
@@ -54,25 +51,23 @@ const tipsRefugioPremium = [
   { title: "Agradece a donantes y voluntarios", desc: "Reconoce públicamente su apoyo y compromiso." },
 ];
 
-// Componente de tarjeta interactiva
 const TipCard = ({ tip, index }: { tip: { title: string; desc: string }, index: number }) => (
   <div
-    className="group bg-white border-2 border-primary/20 hover:border-primary/60 rounded-2xl shadow-lg p-5 flex flex-col items-center text-center transition-all duration-300 cursor-pointer hover:scale-105 hover:bg-primary/5 relative overflow-hidden"
+    className="group bg-white border-2 border-primary/20 hover:border-primary/60 rounded-2xl shadow-lg p-5 flex flex-col items-center text-center transition-all duration-300 cursor-pointer hover:scale-105 hover:bg-primary/5 relative overflow-hidden animate-fade-in"
     tabIndex={0}
     aria-label={tip.title}
   >
     <span className="absolute top-2 right-4 text-primary/30 text-3xl font-extrabold group-hover:text-primary/70 transition-all select-none">#{index + 1}</span>
-    <span className="text-primary font-extrabold text-lg md:text-xl mb-2 group-hover:text-primary/90 transition-colors drop-shadow">{tip.title}</span>
-    <span className="text-gray-700 text-base md:text-lg font-medium group-hover:text-primary/80 transition-colors">{tip.desc}</span>
+    <span className="text-primary font-extrabold text-xl md:text-2xl mb-2 group-hover:text-primary/90 transition-colors drop-shadow animate-bounce">{tip.title}</span>
+    <span className="text-gray-700 text-lg md:text-xl font-medium group-hover:text-primary/80 transition-colors">{tip.desc}</span>
   </div>
 );
 
-// Componente para mostrar tarjetas del glosario
 const GlossaryCard = ({ term, definition, premiumContent }: { term: string; definition: string; premiumContent?: string }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-all duration-300">
-      <h3 className="text-lg font-bold text-primary">{term}</h3>
-      <p className="text-gray-700">{definition}</p>
+    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all duration-300 animate-fade-in">
+      <h3 className="text-xl font-bold text-primary mb-2 animate-pulse">{term}</h3>
+      <p className="text-gray-700 text-lg">{definition}</p>
       {premiumContent && <p className="text-primary mt-2">{premiumContent}</p>}
     </div>
   );
@@ -81,32 +76,30 @@ const GlossaryCard = ({ term, definition, premiumContent }: { term: string; defi
 const content: Record<TabKey, ReactNode> = {
   articulos: (
     <div className="flex flex-col gap-10">
-      {/* Artículos y Consejos */}
       <div className="mb-4">
         <div className="flex gap-2 items-center mb-2">
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${userPlan === "premium" ? "bg-yellow-400 text-white" : "bg-gray-200 text-primary"}`}>
             {userPlan === 'premium' ? "Plan Premium" : "Plan Free"}
           </span>
-          <span className="text-primary font-bold text-lg">Artículos y Consejos</span>
+          <span className="text-primary font-bold text-2xl animate-fade-in">Artículos y Consejos</span>
         </div>
         {userPlan === "premium" ? (
           <>
-            <li>Guías avanzadas de enriquecimiento ambiental y socialización.</li>
-            <li>Consejos de expertos y veterinarios certificados.</li>
-            <li>Checklists descargables y PDFs exclusivos.</li>
-            <li>Solución de problemas de comportamiento felino.</li>
+            <li className="text-lg">Guías avanzadas de enriquecimiento ambiental y socialización.</li>
+            <li className="text-lg">Consejos de expertos y veterinarios certificados.</li>
+            <li className="text-lg">Checklists descargables y PDFs exclusivos.</li>
+            <li className="text-lg">Solución de problemas de comportamiento felino.</li>
           </>
         ) : (
-          <div className="bg-orange-100 rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
-            <p className="text-gray-700 text-base md:text-lg">
+          <div className="bg-orange-100 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer animate-fade-in">
+            <p className="text-gray-700 text-lg md:text-xl font-semibold">
               Descubre los fundamentos del cuidado felino: desde la alimentación y la salud, hasta la higiene y el enriquecimiento de su entorno. ¡Prepárate para darle la mejor vida a tu gato!
             </p>
           </div>
         )}
       </div>
-      {/* Tips interactivos sobre refugios */}
       <div>
-        <h3 className="text-xl md:text-2xl font-bold text-primary mb-6 text-center animate-pulse">🐾 Tips para Refugios Felinos 🐾</h3>
+        <h3 className="text-2xl md:text-3xl font-bold text-primary mb-6 text-center animate-pulse">🐾 Tips para Refugios Felinos 🐾</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {(userPlan === "premium" ? tipsRefugioPremium : tipsRefugioFree).map((tip, i) => (
             <TipCard tip={tip} index={i} key={i} />
@@ -114,9 +107,9 @@ const content: Record<TabKey, ReactNode> = {
         </div>
         {userPlan === "free" && (
           <div className="mt-8 text-center">
-            <span className="text-primary font-semibold">¿Quieres ver más tips y consejos exclusivos?</span>
+            <span className="text-primary font-semibold text-lg">¿Quieres ver más tips y consejos exclusivos?</span>
             <div>
-              <button className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition">¡Hazte Premium!</button>
+              <button className="mt-2 px-6 py-3 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition text-lg animate-bounce">¡Hazte Premium!</button>
             </div>
           </div>
         )}
@@ -125,15 +118,14 @@ const content: Record<TabKey, ReactNode> = {
   ),
   recursos: (
     <div className="flex flex-col gap-10">
-      {/* Videos e Infografías */}
       <div>
         <div className="flex gap-2 items-center mb-2">
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${userPlan === "premium" ? "bg-yellow-400 text-white" : "bg-gray-200 text-primary"}`}>
             {userPlan === "premium" ? "Plan Premium" : "Plan Free"}
           </span>
-          <span className="text-primary font-bold text-lg">Videos e Infografías</span>
+          <span className="text-primary font-bold text-2xl animate-fade-in">Videos e Infografías</span>
         </div>
-        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base md:text-lg">
+        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-lg md:text-xl">
           {userPlan === "premium" ? (
             <>
               <li>Acceso a toda la videoteca y galería de infografías.</li>
@@ -149,24 +141,22 @@ const content: Record<TabKey, ReactNode> = {
         </ul>
         {userPlan === "free" && (
           <div className="mt-6 text-center">
-            <span className="text-primary font-semibold">¿Quieres ver más videos y recursos visuales?</span>
+            <span className="text-primary font-semibold text-lg">¿Quieres ver más videos y recursos visuales?</span>
             <div>
-              <button className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition">¡Hazte Premium!</button>
+              <button className="mt-2 px-6 py-3 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition text-lg animate-bounce">¡Hazte Premium!</button>
             </div>
           </div>
         )}
       </div>
-      <img src="https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=500&q=80" alt="Infografía de gatos" className="rounded-2xl shadow-lg w-full object-cover h-64" />
-
-      {/* Recursos */}
+      <img src="https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=500&q=80" alt="Infografía de gatos" className="rounded-2xl shadow-lg w-full object-cover h-64 animate-fade-in" />
       <div>
         <div className="flex gap-2 items-center mb-2">
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${userPlan === "premium" ? "bg-yellow-400 text-white" : "bg-gray-200 text-primary"}`}>
             {userPlan === "premium" ? "Plan Premium" : "Plan Free"}
           </span>
-          <span className="text-primary font-bold text-lg">Recursos</span>
+          <span className="text-primary font-bold text-2xl animate-fade-in">Recursos</span>
         </div>
-        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base md:text-lg">
+        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-lg md:text-xl">
           {userPlan === "premium" ? (
             <>
               <li><a href="#" className="text-blue-600 underline">Guía PDF avanzada para nuevos adoptantes</a></li>
@@ -185,26 +175,24 @@ const content: Record<TabKey, ReactNode> = {
         </ul>
         {userPlan === "free" && (
           <div className="mt-6 text-center">
-            <span className="text-primary font-semibold">¿Quieres acceder a recursos exclusivos?</span>
+            <span className="text-primary font-semibold text-lg">¿Quieres acceder a recursos exclusivos?</span>
             <div>
-              <button className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition">¡Hazte Premium!</button>
+              <button className="mt-2 px-6 py-3 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition text-lg animate-bounce">¡Hazte Premium!</button>
             </div>
           </div>
         )}
       </div>
-      <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=500&q=80" alt="Recursos felinos" className="rounded-2xl shadow-lg w-full object-cover h-64" />
+      <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=500&q=80" alt="Recursos felinos" className="rounded-2xl shadow-lg w-full object-cover h-64 animate-fade-in" />
     </div>
   ),
-
   glosario: (
     <div className="flex flex-col gap-10">
-      {/* Glosario Felino */}
       <div className="mb-4">
         <div className="flex gap-2 items-center mb-2">
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${userPlan === "premium" ? "bg-yellow-400 text-white" : "bg-gray-200 text-primary"}`}>
             {userPlan === "premium" ? "Plan Premium" : "Plan Free"}
           </span>
-          <span className="text-primary font-bold text-lg">Glosario Felino</span>
+          <span className="text-primary font-bold text-2xl animate-fade-in">Glosario Felino</span>
         </div>
         {userPlan === "premium" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -235,9 +223,9 @@ const content: Record<TabKey, ReactNode> = {
         )}
         {userPlan === "free" && (
           <div className="mt-6 text-center">
-            <span className="text-primary font-semibold">¿Quieres ver el glosario extendido?</span>
+            <span className="text-primary font-semibold text-lg">¿Quieres ver el glosario extendido?</span>
             <div>
-              <button className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition">¡Hazte Premium!</button>
+              <button className="mt-2 px-6 py-3 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition text-lg animate-bounce">¡Hazte Premium!</button>
             </div>
           </div>
         )}
@@ -251,9 +239,9 @@ const content: Record<TabKey, ReactNode> = {
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${userPlan === "premium" ? "bg-yellow-400 text-white" : "bg-gray-200 text-primary"}`}>
             {userPlan === "premium" ? "Plan Premium" : "Plan Free"}
           </span>
-          <span className="text-primary font-bold text-lg">Mitos y Realidades</span>
+          <span className="text-primary font-bold text-2xl animate-fade-in">Mitos y Realidades</span>
         </div>
-        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-base md:text-lg">
+        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-lg md:text-xl">
           {userPlan === "premium" ? (
             <>
               <li>"Los gatos no se encariñan con las personas" — <span className="text-green-600 font-bold">FALSO</span>. <span className="text-primary">Incluye testimonio de experto.</span></li>
@@ -272,14 +260,14 @@ const content: Record<TabKey, ReactNode> = {
         </ul>
         {userPlan === "free" && (
           <div className="mt-6 text-center">
-            <span className="text-primary font-semibold">¿Quieres ver análisis y testimonios exclusivos?</span>
+            <span className="text-primary font-semibold text-lg">¿Quieres ver análisis y testimonios exclusivos?</span>
             <div>
-              <button className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition">¡Hazte Premium!</button>
+              <button className="mt-2 px-6 py-3 bg-yellow-400 text-white rounded-full font-bold shadow hover:bg-yellow-500 transition text-lg animate-bounce">¡Hazte Premium!</button>
             </div>
           </div>
         )}
       </div>
-      <img src="https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=500&q=80" alt="Mitos de gatos" className="rounded-2xl shadow-lg w-full object-cover h-64" />
+      <img src="https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=500&q=80" alt="Mitos de gatos" className="rounded-2xl shadow-lg w-full object-cover h-64 animate-fade-in" />
     </div>
   ),
 };
@@ -288,15 +276,15 @@ const Knowledge = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("articulos");
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-2 sm:px-4">
+    <div className="max-w-5xl mx-auto py-10 px-2 sm:px-4">
       <h1
-        className="text-xl sm:text-2xl md:text-5xl font-extrabold mb-4 text-primary text-center drop-shadow-lg leading-tight break-words"
+        className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 text-primary text-center drop-shadow-lg leading-tight break-words animate-fade-in"
         style={{ wordBreak: "break-word" }}
       >
         Módulo de Conocimiento Felino
       </h1>
       <h2
-        className="hidden sm:block text-base sm:text-lg md:text-xl font-bold text-primary text-center mb-6 tracking-wide"
+        className="hidden sm:block text-lg sm:text-2xl md:text-3xl font-bold text-primary text-center mb-6 tracking-wide animate-bounce"
         style={{ letterSpacing: "0.08em" }}
       >
         LIMA PERÚ
@@ -306,7 +294,7 @@ const Knowledge = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key as TabKey)}
-            className={`px-2 py-1 rounded-full border-2 font-semibold text-xs sm:text-sm md:text-base shadow-md transition-all duration-200 ${activeTab === tab.key ? "bg-primary text-white border-primary scale-105" : "bg-white text-primary border-primary hover:bg-primary/10"}`}
+            className={`px-4 py-2 rounded-full border-2 font-semibold text-lg sm:text-xl md:text-2xl shadow-md transition-all duration-200 ${activeTab === tab.key ? "bg-primary text-white border-primary scale-105 animate-bounce" : "bg-white text-primary border-primary hover:bg-primary/10"}`}
             style={{ maxWidth: "95vw", whiteSpace: "normal", wordBreak: "break-word" }}
           >
             {tab.label}
@@ -322,3 +310,7 @@ const Knowledge = () => {
 };
 
 export default Knowledge;
+
+// Agrega estas animaciones en tu CSS global o tailwind.config.js si usas Tailwind:
+// .animate-fade-in { animation: fadeIn 0.8s; }
+// @keyframes fadeIn { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: none;} }
