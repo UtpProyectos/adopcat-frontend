@@ -25,7 +25,10 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/", {
+      const from = (location.state as { from?: Location })?.from?.pathname || "/"
+  
+      navigate(from, {
+        replace: true,
         state: {
           toast: {
             title: "Inicio de sesión exitoso",
@@ -36,9 +39,8 @@ const LoginPage = () => {
           },
         },
       })
-      
     }
-
+  
     if (fromState?.register) {
       setShowRegister(true)
       navigate(location.pathname, { replace: true, state: {} }) // ✅ limpia el estado
@@ -46,8 +48,8 @@ const LoginPage = () => {
       setShowRegister(false)
       navigate(location.pathname, { replace: true, state: {} }) // ✅ limpia el estado
     }
-  }, [token, navigate, fromState, location.pathname])
-
+  }, [token, navigate, fromState, location])
+  
   const baseClasses =
     "flex flex-col justify-center items-center px-6 py-1 md:p-20 md:py-1 z-10 w-full min-h-screen"
 

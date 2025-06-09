@@ -1,5 +1,6 @@
 import React, { useState, ReactNode } from "react";
 import Footer from "../../../components/Footer";
+
 const tabs = [
   { label: "Artículos y Consejos", key: "articulos" },
   { label: "Recursos y Videos", key: "recursos" }, // Esta Unificada

@@ -14,8 +14,9 @@ const links = [
   { name: "Cats", href: "/cats" },
   { name: "Refugios", href: "/shelters" },
   { name: "Conocimiento", href: "/knowledge" },
-  { name: "Proceso Adopción", href: "/proceso-adopcion" },
-  { name: "Planes", href: "/planes" },
+  { name: "Como adoptar", href: "/adoption-process" },
+  { name: "Planes", href: "/plans" },
+  { name: "Tienda", href: "/store" },
   { name: "FAQ", href: "/faq" },
 ]
 
@@ -71,15 +72,15 @@ const NavbarPublic = () => {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center  gap-3 lg:gap-8 relative">
+        <nav className="hidden md:flex items-center  gap-3 lg:gap-6 relative">
           {links.map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
               className={({ isActive }) =>
                 isActive
-                  ? "text-primary relative font-bold text-sm lg:text-lg"
-                  : "text-black relative font-medium dark:text-white text-sm lg:text-lg hover:text-primary"
+                  ? "text-primary relative font-bold text-sm lg:text-[1rem]"
+                  : "text-black relative font-medium dark:text-white text-sm lg:text-[1rem] hover:text-primary"
               }
             >
               {({ isActive }) => (
@@ -98,7 +99,7 @@ const NavbarPublic = () => {
         </nav>
 
         {/* Botones Desktop */}
-        <div className="hidden md:flex items-center gap-2 lg:gap-6">
+        <div className="hidden md:flex items-center gap-2 lg:gap-4">
           <AdoptButton
             label={user?.role?.toUpperCase?.() === 'ROLE_ADMIN' ? "Ir a Admin" : "Dona Aquí"}
             variant="secondary"
@@ -127,7 +128,7 @@ const NavbarPublic = () => {
               />
 
               <div className="absolute right-[-4px] w-40 bg-white dark:bg-dark shadow-md rounded-lg p-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <NavLink to="/perfil" className="block px-3 py-2 hover:text-primary">
+                <NavLink to="/profile" className="block px-3 py-2 hover:text-primary">
                   Ver perfil
                 </NavLink>
                 <button
@@ -143,14 +144,14 @@ const NavbarPublic = () => {
               <NavLink
                 to="/login"
                 state={{ register: true }}
-                className="hover:text-primary font-medium text-sm lg:text-lg" >
+                className="hover:text-primary font-medium text-sm lg:text-[1rem]" >
                 Sign up
               </NavLink>
 
               <NavLink
                 to="/login"
                 state={{ register: false }}
-                className="hover:text-primary font-medium text-sm lg:text-lg"   >
+                className="hover:text-primary font-medium text-sm lg:text-[1rem]"   >
                 Login
               </NavLink>
 
@@ -216,17 +217,31 @@ const NavbarPublic = () => {
 
             {/* Botones y usuario */}
             <div className="mt-6 flex flex-col gap-3">
-              <AdoptButton label="Dona Aquí" variant="secondary" />
+
+              <AdoptButton
+                label={user?.role?.toUpperCase?.() === 'ROLE_ADMIN' ? "Ir a Admin" : "Dona Aquí"}
+                variant="secondary"
+                className="text-xs lg:text-sm"
+                onPress={() => {
+                  if (user?.role?.toUpperCase?.() === 'ROLE_ADMIN') {
+                    window.location.href = "/admin/dashboard"
+                  } else {
+                    alert("Redirigir a donación")
+                  }
+                }}
+              /> 
+
               <ThemeButton />
               {user ? (
                 <>
                   <NavLink
-                    to="/perfil"
+                    to="/profile"
                     onClick={() => setIsOpen(false)}
                     className="hover:text-primary font-medium text-lg"
                   >
                     Ver perfil
                   </NavLink>
+
                   <button
                     onClick={() => {
                       logout()

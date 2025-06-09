@@ -51,8 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(newUser) 
   }
 
-  const logout = () => {
-    console.warn("🔴 Logout forzado")
+  const logout = () => { 
     googleLogout()
     localStorage.removeItem("token")
     localStorage.removeItem("user")

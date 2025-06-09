@@ -1,8 +1,8 @@
 import React from "react";
 
 // Aquí importa los datos y componentes necesarios (puedes mover los arrays y componentes auxiliares aquí o importarlos)
-import { tipsRefugioFree, tipsRefugioPremium, tipSources } from "./tipsData";
-import { TipCard, TipModal, TipsSection } from "./TipsComponents";
+import { tipsRefugioFree, tipsRefugioPremium } from "./tipsData";
+import {  TipsSection } from "./TipsComponents";
 
 
 type TabKey = "articulos" | "videos" | "glosario" | "mitos" | "recursos";

@@ -15,6 +15,7 @@
     "@tabler/icons-react": "^3.33.0",
     "@tailwindcss/cli": "^4.1.3",
     "@tailwindcss/vite": "^4.1.3",
+    "adopcat-frontend": "file:",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.9.7",
@@ -26,6 +27,7 @@
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.5.0",
+    "swiper": "^11.2.8",
     "tailwind-merge": "^3.2.0",
     "zustand": "^5.0.3"
   },
@@ -34,6 +36,7 @@
     "@types/leaflet": "^1.9.18",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/swiper": "^5.4.3",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.21.0",

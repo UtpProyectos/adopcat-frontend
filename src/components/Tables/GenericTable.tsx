@@ -208,7 +208,7 @@ export default function GenericTable<T extends Record<string, any>>({
   return (
     <>
 
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4 ">
         {/* Controles arriba */}
         <div className="flex flex-col gap-4 mb-4 ">
           <div className="flex  gap-3 md:flex-row flex-col md:justify-between justify-center md:items-end  ">
@@ -231,7 +231,7 @@ export default function GenericTable<T extends Record<string, any>>({
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu
-                    disallowEmptySelection
+                
                     aria-label="Status Filter"
                     closeOnSelect={false}
                     selectedKeys={statusFilter}
@@ -295,7 +295,7 @@ export default function GenericTable<T extends Record<string, any>>({
         </div>
 
         {/* Tabla */}
-        <div className="p-1">
+        <div className="p-1 ">
           <Table
             isHeaderSticky
             aria-label="Custom Table"

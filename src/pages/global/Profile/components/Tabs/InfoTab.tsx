@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {
-  Input, Button, 
+  Input, Button,
   addToast,
   CircularProgress,
   Progress
@@ -14,8 +14,9 @@ import { validarPassword } from "../../../../../auth/passwordValidator"
 import PhoneVerificationModal from "../Modals/PhoneVerificationModal"
 import EmailVerificationModal from "../Modals/EmailVerificationModal"
 import { UserProfile } from "../../../../../models/user"
+import DeleteAccountModal from "../Modals/DeleteAccountModal"
 
- 
+
 
 const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => void }) => {
 
@@ -33,8 +34,11 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [changingPassword, setChangingPassword] = useState(false)
 
+
   const { score, strengthLabel, suggestions, color } = validarPassword(newPassword)
- 
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false) 
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -67,7 +71,7 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
   const handleEmailVerified = () => {
     if (profile) setProfile({ ...profile, emailVerified: true })
   }
-  
+
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -176,6 +180,34 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
       setPasswordError(err?.response?.data?.message || "Error al cambiar la contraseña.")
     } finally {
       setChangingPassword(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!user) return
+    try {
+      setDeleting(true)
+      await userService.updateUserEnabled(user.userId, false)
+
+      addToast({
+        title: "Cuenta desactivada",
+        description: "Tu cuenta ha sido desactivada. Será eliminada completamente en 90 días.",
+        color: "warning",
+        timeout: 5000,
+      })
+
+      setDeleteModalOpen(false)
+      localStorage.removeItem("user")
+      window.location.href = "/" // o redirect a login
+    } catch (error) {
+      console.error("Error al desactivar cuenta", error)
+      addToast({
+        title: "Error",
+        description: "No se pudo desactivar la cuenta.",
+        color: "danger",
+      })
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -357,6 +389,16 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
         />
       </form>
 
+      <div className="mt-12 border-t pt-8">
+        <h2 className="text-xl font-semibold mb-3 text-rose-600">Eliminar cuenta</h2>
+        <p className="text-sm text-gray-600 mb-4 dark:text-gray-400">
+          Esta acción desactivará tu cuenta de forma inmediata. 
+        </p>
+        <Button color="danger" variant="bordered" onClick={() => setDeleteModalOpen(true)}>
+          Eliminar cuenta
+        </Button>
+      </div>
+
 
 
       <EmailVerificationModal
@@ -375,6 +417,15 @@ const InfoTab = ({ onProfileLoad }: { onProfileLoad: (profile: UserProfile) => v
         userId={user?.userId || ""}
         onSuccess={handlePhoneVerified}
       />
+
+      <DeleteAccountModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        userEmail={user?.email || ""}
+        onConfirm={handleDelete}
+        loading={deleting}
+      />
+
     </div>
   )
 }
