@@ -25,7 +25,7 @@ const AdoptionCard = ({ request, onDelete, onViewDetails, onNavigateToCat }: Pro
   return (
     <Card shadow="sm" className="w-full">
       <CardBody className="flex flex-row justify-between items-center gap-4 w-full">
-        <div className="flex flex-row items-center gap-4 w-full">
+        <div className="flex flex-row items-center justify-between gap-4 w-full ">
           <User
             avatarProps={{
               src:
@@ -34,7 +34,7 @@ const AdoptionCard = ({ request, onDelete, onViewDetails, onNavigateToCat }: Pro
               radius: "lg",
               size: "md",
             }}
-            name={<span className="font-semibold text-sm md:text-base lg:text-lg truncate">{request.cat?.name}</span>}
+            name={<span className="font-semibold text-[0.8rem] md:text-base lg:text-lg truncate">{request.cat?.name}</span>}
             description={
               <span className="text-xs md:text-sm text-gray-500 truncate">
                 {request.cat?.organization?.name || "Sin organización"}
@@ -42,7 +42,7 @@ const AdoptionCard = ({ request, onDelete, onViewDetails, onNavigateToCat }: Pro
             }
           />
 
-          <div className="flex flex-col gap-1 text-xs md:text-sm min-w-fit">
+          <div className="flex flex-col gap-1 text-xs md:text-sm min-w-fit  ">
             <div className="flex items-center gap-2">
               <span className="text-gray-500">Estado:</span>
               <Chip
@@ -53,13 +53,13 @@ const AdoptionCard = ({ request, onDelete, onViewDetails, onNavigateToCat }: Pro
                 <p className="text-[0.5rem] md:text-[0.6rem]">{request.status}</p>
               </Chip>
             </div>
-            <div className="text-gray-400 text-[0.7rem] md:text-xs">
+            <div className="text-gray-400 text-[0.6rem] md:text-xs">
               Enviado: {new Date(request.submittedAt).toLocaleDateString()}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+        <div className="flex items-center gap-2 w-auto justify-end ">
           <ActionsDropdown
             actions={[
               {

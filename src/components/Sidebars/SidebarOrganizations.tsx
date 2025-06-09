@@ -54,7 +54,7 @@ const SidebarOrganizations = ({ organization }: SidebarProps) => {
     },
     {
       label: "Solicitudes de Adopción",
-      href: `/organizations/${orgId}/solicitudes`,
+      href: `/organizations/${orgId}/adoptions`,
       icon: IconInbox,
     },
     {
