@@ -28,6 +28,10 @@ import Donaciones from "../pages/global/Donaciones/Donaciones"
 import Planes from "../pages/global/Planes/Planes"
 import OnlineStore from "../pages/global/OnlineStore"
 import OrganizationAdoptionsPage from "@/pages/organization/Adoption"
+import AdminPanel from '../pages/admin/StoreAdmin/AdminPanel';
+import CategoryForm from '../pages/admin/StoreAdmin/CategoryForm';
+import StoreAdmin from "../pages/admin/StoreAdmin/";
+import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -66,6 +70,12 @@ const AppRouter = () => {
           <Route path="/donaciones" element={<Donaciones />} />
            <Route path="/plans" element={<Planes />} />
            <Route path="/store" element={<OnlineStore />} />
+           <Route path="/admin" element={<AdminPanel />} />
+           <Route path="/admin/tienda" element={<StoreAdmin />} />
+           <Route path="/admin/categorias" element={<CategoryForm />} />
+           <Route path="/admin/proveedores" element={<SupplierForm />} />
+
+          
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
