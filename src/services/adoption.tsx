@@ -61,6 +61,9 @@ export const adoptionService = {
       params: { comment },
     })
   },
+  getComments: (requestId: string) => {
+    return api.get(`/adoptions/${requestId}/comments`);
+  },  
 
   /**
    * 🐾 Marcar como entregado
@@ -71,4 +74,12 @@ export const adoptionService = {
   deleteRequest: (requestId: string) => {
     return api.delete(`/adoptions/${requestId}`)
   },
+  
+  updateInterviewType: (requestId: string, interviewType: "PRESENTIAL" | "VIRTUAL") => {
+  return api.put(`/adoptions/${requestId}/interview-type`, `"${interviewType}"`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
 }
