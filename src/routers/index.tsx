@@ -26,11 +26,12 @@ import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
 import OrganizationCatsPage from "../pages/organization/Cats"
 import Donaciones from "../pages/global/Donaciones/Donaciones"
 import Planes from "../pages/global/Planes/Planes"
-import OnlineStore from "../pages/global/OnlineStore"
+import OnlineStore from "../pages/global/OnlineStore/Catalog"
 import AdminPanel from '../pages/admin/StoreAdmin/AdminPanel';
 import CategoryForm from '../pages/admin/StoreAdmin/CategoryForm';
 import StoreAdmin from "../pages/admin/StoreAdmin/";
 import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
+import Catalog from "../pages/global/OnlineStore/Catalog"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -68,7 +69,7 @@ const AppRouter = () => {
           <Route path="/adoption-process" element={<CurvedRoadTimeline />} />
           <Route path="/donaciones" element={<Donaciones />} />
            <Route path="/plans" element={<Planes />} />
-           <Route path="/store" element={<OnlineStore />} />
+           <Route path="/tienda" element={<Catalog />} />
            <Route path="/admin" element={<AdminPanel />} />
            <Route path="/admin/tienda" element={<StoreAdmin />} />
            <Route path="/admin/categorias" element={<CategoryForm />} />
