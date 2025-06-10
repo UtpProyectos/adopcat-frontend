@@ -10,9 +10,18 @@ type CatCardProps = {
   location: string;
   gender: string;
   age: string;
+  buttonLabel?: string; // nuevo campo
 };
 
-const CatCard = ({ id, name, imageUrl, location, gender, age }: CatCardProps) => {
+const CatCard = ({
+  id,
+  name,
+  imageUrl,
+  location,
+  gender,
+  age,
+  buttonLabel = "Adóptame", // valor por defecto
+}: CatCardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +32,7 @@ const CatCard = ({ id, name, imageUrl, location, gender, age }: CatCardProps) =>
           removeWrapper
           src={imageUrl}
           alt={`Foto de ${name}`}
-          className="w-[300px] h-[310px]  object-cover"
+          className="w-[300px] h-[310px] object-cover"
         />
       </CardBody>
 
@@ -48,7 +57,10 @@ const CatCard = ({ id, name, imageUrl, location, gender, age }: CatCardProps) =>
       {/* Nombre + Botón */}
       <CardFooter className="flex items-center justify-between py-2 pb-6 px-4">
         <span className="font-semibold text-lg">{name}</span>
-        <AdoptButton onPress={() => navigate(`/cats/${id}`)} />
+        <AdoptButton
+          onPress={() => navigate(`/cats/${id}`)}
+          label={buttonLabel} // importante: prop "label"
+        />
       </CardFooter>
     </Card>
   );

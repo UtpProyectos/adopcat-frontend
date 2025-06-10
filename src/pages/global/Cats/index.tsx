@@ -33,6 +33,12 @@ const Cats = () => {
   useEffect(() => {
     fetchCats();
   }, []);
+  const formatearUbicacion = (location: string) => {
+    const partes = location.split(",");
+    // Tomamos las últimas 2 o 3 partes, típicamente "Ciudad, País" o "Departamento, Ciudad, País"
+    const visibles = partes.slice(-3).map((p) => p.trim());
+    return visibles.join(", ");
+  }
 
   // Función para calcular edad legible en meses o años
   const formatAge = (birthDateStr?: string) => {
@@ -114,7 +120,7 @@ const Cats = () => {
                     id={cat.catId}
                     name={cat.name}
                     imageUrl={cat.mainImageUrl || CatCatalogoOption}
-                    location="Lima, Perú"
+                    location={cat.location ? formatearUbicacion(cat.location) : ""}
                     age={formatAge(cat.birthDate ? cat.birthDate.toString() : undefined)}
                     gender={cat.gender === "FEMALE" ? "Hembra" : cat.gender === "MALE" ? "Macho" : cat.gender || "Desconocido"}
                   />
@@ -122,7 +128,7 @@ const Cats = () => {
               )}
             </div>
           )}
-               
+
 
         </div>
       </section>

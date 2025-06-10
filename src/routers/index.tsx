@@ -32,6 +32,7 @@ import AdminPanel from '../pages/admin/StoreAdmin/AdminPanel';
 import CategoryForm from '../pages/admin/StoreAdmin/CategoryForm';
 import StoreAdmin from "../pages/admin/StoreAdmin/";
 import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
+import OrganizationMembersPage from "@/pages/organization/Members"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -90,6 +91,7 @@ const AppRouter = () => {
             <Route path=":id/settings" element={<OrganizationConfig />} />
             <Route path=":id/cats" element={<OrganizationCatsPage />} />
             <Route path=":id/adoptions" element={<OrganizationAdoptionsPage />} />
+            <Route path=":id/members" element={<OrganizationMembersPage />} />
           </Route>
         </Route>
 

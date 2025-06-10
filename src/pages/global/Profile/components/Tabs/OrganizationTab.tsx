@@ -30,7 +30,7 @@ export default function OrganizationTab() {
 
   const fetchOrganizations = async () => {
     try {
-      const res = await organizationService.getByUserId(user?.userId || "")
+      const res = await organizationService.getMyOrganizations(user?.userId || "")
       setData(res.data)
     } catch (error) {
       console.error("Error cargando organizaciones", error)

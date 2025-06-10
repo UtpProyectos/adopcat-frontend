@@ -5,15 +5,19 @@ export const organizationService = {
 
   update: (id: string, data: any) => api.put(`/organizations/${id}`, data),
 
+
   delete: (id: string) => api.delete(`/organizations/${id}`),
 
   getById: (id: string) => api.get(`/organizations/${id}`),
 
   getAll: () => api.get("/organizations"),
 
+  getMyOrganizations: (userId: string) =>
+    api.get(`/organizations/my-organizations/${userId}`),
+
   getByUserId: (userId: string) =>
     api.get(`/organizations/by-user/${userId}`),
-  
+
 
   updateStatus: (id: string, status: string, verified: boolean) =>
     api.put(`/organizations/${id}/status`, null, {

@@ -90,7 +90,7 @@ export const userService = {
       code
     })
   },
-  
+
   /**
    * 🔄 Actualiza el estado de aprobación/rechazo del usuario
    * @param userId - El ID del usuario
@@ -116,11 +116,20 @@ export const userService = {
   }) => {
     return api.post("/users/admin", data)
   },
-  
+
   updateUserEnabled: (userId: string, enabled: boolean) => {
     return api.put(`/users/${userId}/enabled`, null, {
       params: { enabled },
     })
   }
-  
+  ,
+  /**
+ * 🔎 Buscar usuarios por nombre, apellido o correo
+ */
+  searchUsers: (query: string) => {
+    return api.get("/users/search", {
+      params: { query }
+    })
+  }
+
 }

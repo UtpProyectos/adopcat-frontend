@@ -16,6 +16,7 @@ import RequestTab from "./components/Tabs/RequestTab";
 import { useEffect, useState } from "react";
 import OrganizationTab from "./components/Tabs/OrganizationTab"; 
 import { UserProfile } from "../../../models/user";
+import MyCatsTab from "./components/Tabs/MyCatsTab";
 
 const Profile = () => {
   const location = useLocation();
@@ -47,7 +48,7 @@ const Profile = () => {
 
   const tabs = [
     { id: "info", label: "Información", component: <InfoTab onProfileLoad={setFullProfile} /> },
-    { id: "mis-gatos", label: "Mis Gatos", component: <CatsTab /> },
+    { id: "mis-gatos", label: "Mis Gatos", component: <MyCatsTab /> },
     { id: "solicitudes", label: "Solicitudes", component: <RequestTab /> },
     { id: "planes", label: "Planes", component: <RequestTab /> },
     { id: "donaciones", label: "Donaciones", component: <RequestTab /> }, 

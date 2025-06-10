@@ -59,12 +59,12 @@ const SidebarOrganizations = ({ organization }: SidebarProps) => {
     },
     {
       label: "Miembros",
-      href: `/organizations/${orgId}/miembros`,
+      href: `/organizations/${orgId}/members`,
       icon: IconUsers,
     },
     {
       label: "Donaciones",
-      href: `/organizations/${orgId}/donaciones`,
+      href: `/organizations/${orgId}/donations`,
       icon: IconBuildingCommunity,
     },
 
