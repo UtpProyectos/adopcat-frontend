@@ -70,5 +70,9 @@ export const catService = {
       onUploadProgress: onProgress
     });
   },
+  getDeliveredCatsByMe: () => {
+  return api.get("/cats/adopted-by-me");
+}
+
   
 };

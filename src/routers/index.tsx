@@ -28,6 +28,7 @@ import Donaciones from "../pages/global/Donaciones/Donaciones"
 import Planes from "../pages/global/Planes/Planes"
 import OnlineStore from "../pages/global/OnlineStore"
 import OrganizationAdoptionsPage from "@/pages/organization/Adoption"
+import OrganizationMembersPage from "@/pages/organization/Members"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -80,6 +81,7 @@ const AppRouter = () => {
             <Route path=":id/settings" element={<OrganizationConfig />} />
             <Route path=":id/cats" element={<OrganizationCatsPage />} />
             <Route path=":id/adoptions" element={<OrganizationAdoptionsPage />} />
+            <Route path=":id/members" element={<OrganizationMembersPage />} />
           </Route>
         </Route>
 

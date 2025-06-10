@@ -12,9 +12,12 @@ export const organizationService = {
 
   getAll: () => api.get("/organizations"),
 
+  getMyOrganizations: (userId: string) =>
+    api.get(`/organizations/my-organizations/${userId}`),
+
   getByUserId: (userId: string) =>
     api.get(`/organizations/by-user/${userId}`),
-  
+
 
   updateStatus: (id: string, status: string, verified: boolean) =>
     api.put(`/organizations/${id}/status`, null, {
