@@ -23,6 +23,7 @@ export const OrganizationProvider = ({ id, children }: { id: string; children: R
     setError(null)
     try {
       const res = await organizationService.getById(id)
+      console.log("fetchOrganization res", res)
       setOrganization(res.data)
     } catch (err) {
       setError(err as Error)

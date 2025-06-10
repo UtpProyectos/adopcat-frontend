@@ -5,6 +5,7 @@ export const organizationService = {
 
   update: (id: string, data: any) => api.put(`/organizations/${id}`, data),
 
+
   delete: (id: string) => api.delete(`/organizations/${id}`),
 
   getById: (id: string) => api.get(`/organizations/${id}`),
