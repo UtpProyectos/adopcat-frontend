@@ -1,12 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import App from "./App.tsx"
+// import App from "./App.tsx"
 import "./index.css" 
 
-import { ThemeProvider } from "./context/ThemeContext.tsx"
-import { AuthProvider } from "./context/AuthContext.tsx"
+// import { ThemeProvider } from "./context/ThemeContext.tsx"
+// import { AuthProvider } from "./context/AuthContext.tsx"
 import { GoogleOAuthProvider } from "@react-oauth/google" 
 import { HeroUIProvider, ToastProvider } from "@heroui/react"
+import { ThemeProvider } from "./context/ThemeContext.js"
+import { AuthProvider } from "./context/AuthContext.js"
+import App from "./App"
 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
