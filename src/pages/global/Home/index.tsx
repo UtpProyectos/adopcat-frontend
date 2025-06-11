@@ -5,8 +5,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import Alert from "../../../components/Alerts/Alert";
 import { useAuth } from "../../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { addToast } from "@heroui/react";
-import Footer from "../../../components/Footer";
+import { addToast } from "@heroui/react"; 
 import { FaCat, FaHome, FaBookOpen, FaQuestionCircle, FaRegListAlt, FaStore, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const categories = [
@@ -397,8 +396,7 @@ Juan Lozada creó esta plataforma digital tras identificar la necesidad de conec
         </div>
       </section>
 
-
-      <Footer />
+ 
     </div>
   );
 };

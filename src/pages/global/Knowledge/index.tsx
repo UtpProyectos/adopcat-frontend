@@ -303,8 +303,7 @@ const Knowledge = () => {
       </div>
       <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl shadow-2xl p-8 min-h-[350px] animate-fade-in">
         {content[activeTab]}
-      </div>
-      <Footer />
+      </div> 
     </div>
   );
 };

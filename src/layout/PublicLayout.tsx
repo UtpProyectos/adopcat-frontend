@@ -1,6 +1,7 @@
  
 import { Outlet } from "react-router-dom"
 import NavbarPublic from "../components/Navbars/NavbarPublic"
+import Footer from "@/components/Footer"
 
 const PublicLayout = () => {
   return (
@@ -12,9 +13,7 @@ const PublicLayout = () => {
         <Outlet /> {/* Aquí carga Home, Login, Registro, etc */}
       </main>
 
-      <footer className="text-center py-4 text-gray-400 text-sm">
-        © 2025 ADOCAT. Todos los derechos reservados.
-      </footer>
+       <Footer />
     </div>
   )
 }
