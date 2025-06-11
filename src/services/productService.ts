@@ -1,8 +1,7 @@
-import axios from 'axios';
-import { Product } from '../models/product';
+import { api } from "./api"; // asegúrate que esté en el mismo folder o ajusta la ruta
+import { Product } from "../models/product";
 
 export const getAllProducts = async (): Promise<Product[]> => {
-  const response = await axios.get('/api/products');
-  console.log('📦 productos desde backend:', response.data); // 👈 esto nos ayuda a depurar
+  const response = await api.get("/products");
   return response.data;
 };
