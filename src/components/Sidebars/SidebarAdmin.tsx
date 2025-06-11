@@ -13,10 +13,10 @@ import {
 import { Award } from "lucide-react"
   
   const adminLinks = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: IconLayoutDashboard },
+    // { label: "Dashboard", href: "/admin/dashboard", icon: IconLayoutDashboard },
     { label: "Usuarios", href: "/admin/users", icon: IconUsers },
     { label: "Organizaciones", href: "/admin/organizaciones", icon: IconBuildingCommunity },
-    { label: "Donaciones", href: "/admin/donations", icon: Award  },
+    // { label: "Donaciones", href: "/admin/donations", icon: Award  },
   ]
   
   const SidebarAdmin = () => {

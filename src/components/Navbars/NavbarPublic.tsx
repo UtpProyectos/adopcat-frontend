@@ -106,7 +106,7 @@ const NavbarPublic = () => {
             className="text-xs lg:text-sm"
             onPress={() => {
               if (user?.role?.toUpperCase?.() === 'ROLE_ADMIN') {
-                window.location.href = "/admin/dashboard"
+                window.location.href = "/admin/users"
               } else {
                 alert("Redirigir a donación")
               }

@@ -50,8 +50,8 @@ const Profile = () => {
     { id: "info", label: "Información", component: <InfoTab onProfileLoad={setFullProfile} /> },
     { id: "mis-gatos", label: "Mis Gatos", component: <MyCatsTab /> },
     { id: "solicitudes", label: "Solicitudes", component: <RequestTab /> },
-    { id: "planes", label: "Planes", component: <RequestTab /> },
-    { id: "donaciones", label: "Donaciones", component: <RequestTab /> }, 
+    // { id: "planes", label: "Planes", component: <RequestTab /> },
+    // { id: "donaciones", label: "Donaciones", component: <RequestTab /> }, 
     { id: "organizaciones", label: "Organizaciones", component: <OrganizationTab /> },
   ];
 

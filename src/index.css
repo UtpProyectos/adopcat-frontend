@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
 @plugin './hero.ts';
 @source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
@@ -19,7 +20,6 @@
 }
 
 
-
 * {
   font-family: 'Poppins', sans-serif;
 }
@@ -37,3 +37,5 @@ body {
     padding-top: 10px !important;
   }
 }
+
+
