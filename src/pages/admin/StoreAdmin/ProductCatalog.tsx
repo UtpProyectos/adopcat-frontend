@@ -3,8 +3,17 @@ import axios from 'axios';
 import ContainerHeader from '../../../components/Containers/ContainerHeader';
 import CatHeader from '@/assets/cats/cat-catalogo.png';
 
+type Product = {
+  productId: string;
+  name: string;
+  description: string;
+  price: number;
+  discountPct: number;
+  imageUrl?: string;
+};
+
 const CatalogPage = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
