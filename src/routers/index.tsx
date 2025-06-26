@@ -33,6 +33,7 @@ import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
 import Catalog from "../pages/global/OnlineStore/Catalog"
 import CartPage from "../pages/global/OnlineStore/CartPage"
 import CheckoutPage from "../pages/global/OnlineStore/CheckoutPage"
+import GraciasPage from "../pages/global/OnlineStore/GraciasPage"
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -73,6 +74,7 @@ const AppRouter = () => {
            <Route path="/tienda" element={<Catalog />} />
             <Route path="/carrito" element={<CartPage />} />
              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/gracias" element={<GraciasPage />} />
            <Route path="/admin" element={<AdminPanel />} />
            <Route path="/admin/tienda" element={<StoreAdmin />} />
            <Route path="/admin/categorias" element={<CategoryForm />} />
