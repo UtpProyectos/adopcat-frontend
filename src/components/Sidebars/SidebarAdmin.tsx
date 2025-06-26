@@ -8,17 +8,21 @@ import {
     IconChevronLeft,
     IconChevronRight,
     IconHome,
+     IconShoppingCart,
   } from "@tabler/icons-react"
   import { NavLink, useNavigate } from "react-router-dom"
   import { useAuth } from "../../context/AuthContext"
   import { useState } from "react"
-  
+
   const adminLinks = [
     { label: "Dashboard", href: "/admin/dashboard", icon: IconLayoutDashboard },
     { label: "Usuarios", href: "/admin/users", icon: IconUsers },
     { label: "Gatos", href: "/admin/cats", icon: IconCat },
     { label: "Organizaciones", href: "/admin/organizaciones", icon: IconBuildingCommunity },
     { label: "Solicitudes", href: "/admin/solicitudes", icon: IconInbox },
+      // ✅ NUEVA ENTRADA
+    { label: "Tienda", href: "/admin/tienda", icon: IconShoppingCart },
+
   ]
   
   const SidebarAdmin = () => {

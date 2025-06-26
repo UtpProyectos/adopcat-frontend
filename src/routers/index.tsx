@@ -26,14 +26,12 @@ import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
 import OrganizationCatsPage from "../pages/organization/Cats"
 import Donaciones from "../pages/global/Donaciones/Donaciones"
 import Planes from "../pages/global/Planes/Planes"
-import AdminPanel from '../pages/admin/StoreAdmin/AdminPanel';
-import CategoryForm from '../pages/admin/StoreAdmin/CategoryForm';
-import StoreAdmin from "../pages/admin/StoreAdmin/";
-import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
 import Catalog from "../pages/global/OnlineStore/Catalog"
 import CartPage from "../pages/global/OnlineStore/CartPage"
 import CheckoutPage from "../pages/global/OnlineStore/CheckoutPage"
 import GraciasPage from "../pages/global/OnlineStore/GraciasPage"
+import ProductsAdminPage from "../pages/admin/StoreAdmin/ProductsAdminPage"; // 👈 importa esto
+
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -75,11 +73,9 @@ const AppRouter = () => {
             <Route path="/carrito" element={<CartPage />} />
              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/gracias" element={<GraciasPage />} />
-           <Route path="/admin" element={<AdminPanel />} />
-           <Route path="/admin/tienda" element={<StoreAdmin />} />
-           <Route path="/admin/categorias" element={<CategoryForm />} />
-           <Route path="/admin/proveedores" element={<SupplierForm />} />
-
+           
+          
+            
           
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
@@ -106,6 +102,7 @@ const AppRouter = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="organizaciones" element={<OrganizationsAdminPage />} />
+             <Route path="tienda" element={<ProductsAdminPage />} /> 
           </Route>
         </Route>
 
