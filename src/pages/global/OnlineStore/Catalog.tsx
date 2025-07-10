@@ -54,9 +54,9 @@ const Catalog = () => {
           <div>
             <h3 className="text-lg font-bold text-orange-500 mb-2 uppercase">Marcas</h3>
             <ul className="text-sm space-y-1">
-              <li><Link to="/marcas/adopbrand" className="hover:text-orange-600 font-medium">AdopBrand</Link></li>
-              <li><Link to="/marcas/gatotop" className="hover:text-orange-600 font-medium">GatoTop</Link></li>
-              <li><Link to="/marcas/felinex" className="hover:text-orange-600 font-medium">Felinex</Link></li>
+              <li><Link to="https://www.superpet.pe/marcas/ricocat?srsltid=AfmBOorcuC5WKLZAqMuJBJS779FbFRydV5GfoDJPWUjxCfmiym6oOHv6" className="hover:text-orange-600 font-medium">Superpet</Link></li>
+              <li><Link to="https://purina.com.pe/proplan/gatos" className="hover:text-orange-600 font-medium">Purina</Link></li>
+              <li><Link to="https://www.vega.pe/comida-para-gatos-ricocat-esterilizados-bolsa-9-kg-650288/p?srsltid=AfmBOopqSPSX2j3mosw85bveZDGvJ6eOIp148LjL_HHHom1EmSG-bCIM" className="hover:text-orange-600 font-medium">Ricocat</Link></li>
             </ul>
           </div>
         </aside>
