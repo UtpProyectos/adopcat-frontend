@@ -16,8 +16,7 @@ const links = [
   { name: "Conocimiento", href: "/knowledge" },
   { name: "Como adoptar", href: "/adoption-process" },
   { name: "Planes", href: "/plans" },
-  { name: "Tienda", href: "/tienda" },
-  { name: "FAQ", href: "/faq" },
+  { name: "Tienda", href: "/tienda" }, 
 ]
 
 const NavbarPublic = () => {

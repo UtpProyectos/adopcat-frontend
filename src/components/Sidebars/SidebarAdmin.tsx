@@ -6,6 +6,7 @@ import {
     IconChevronLeft,
     IconChevronRight,
     IconHome,
+     IconShoppingCart,
   } from "@tabler/icons-react"
   import { NavLink, useNavigate } from "react-router-dom"
   import { useAuth } from "../../context/AuthContext"
@@ -16,7 +17,9 @@ import { Award } from "lucide-react"
     // { label: "Dashboard", href: "/admin/dashboard", icon: IconLayoutDashboard },
     { label: "Usuarios", href: "/admin/users", icon: IconUsers },
     { label: "Organizaciones", href: "/admin/organizaciones", icon: IconBuildingCommunity },
-    // { label: "Donaciones", href: "/admin/donations", icon: Award  },
+      // ✅ NUEVA ENTRADA
+    { label: "Tienda", href: "/admin/tienda", icon: IconShoppingCart },
+
   ]
   
   const SidebarAdmin = () => {
