@@ -1,5 +1,4 @@
-import { IconUsers, IconCat, IconBuildingCommunity, IconInbox, IconShoppingCart } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { IconUsers, IconCat, IconBuildingCommunity, IconInbox } from "@tabler/icons-react"
 
 const Dashboard = () => {
   return (
@@ -11,12 +10,6 @@ const Dashboard = () => {
         <Card title="Gatos" icon={<IconCat size={32} />} value="42" />
         <Card title="Organizaciones" icon={<IconBuildingCommunity size={32} />} value="7" />
         <Card title="Solicitudes" icon={<IconInbox size={32} />} value="19" />
-        <CardLink
-          to="/tienda"
-          title="Tienda Online"
-          icon={<IconShoppingCart size={32} />}
-          value="Ver tienda"
-        />
       </div>
 
       <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-primary p-6">
@@ -27,8 +20,8 @@ const Dashboard = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Card = ({ title, icon, value }: { title: string; icon: React.ReactNode; value: string }) => (
   <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-primary p-4 flex items-center gap-4">
@@ -38,18 +31,6 @@ const Card = ({ title, icon, value }: { title: string; icon: React.ReactNode; va
       <h3 className="text-xl font-bold text-gray-900 dark:text-white">{value}</h3>
     </div>
   </div>
-);
+)
 
-const CardLink = ({ to, title, icon, value }: { to: string; title: string; icon: React.ReactNode; value: string }) => (
-  <Link to={to}>
-    <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-primary p-4 flex items-center gap-4 hover:shadow-lg transition">
-      <div className="p-2 rounded-full bg-primary/10 text-primary">{icon}</div>
-      <div>
-        <p className="text-sm text-gray-600 dark:text-gray-300">{title}</p>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{value}</h3>
-      </div>
-    </div>
-  </Link>
-);
-
-export default Dashboard;
+export default Dashboard

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { productService } from "../../../services/productService";
+import { getAllProducts } from "../../../services/productService";
 import { Product } from "../../../models/product";
 import { Card } from "../../../components/Cards/Card";
 import AdoptButton from "../../../components/Buttons/AdoptButton";
@@ -16,7 +16,7 @@ const Catalog = () => {
   const { items, addToCart } = useCartStore();
 
   useEffect(() => {
-    productService.getAll()
+    getAllProducts()
       .then(setProducts)
       .catch(console.error);
   }, []);
@@ -54,9 +54,9 @@ const Catalog = () => {
           <div>
             <h3 className="text-lg font-bold text-orange-500 mb-2 uppercase">Marcas</h3>
             <ul className="text-sm space-y-1">
-              <li><Link to="https://www.superpet.pe/marcas/ricocat?srsltid=AfmBOorcuC5WKLZAqMuJBJS779FbFRydV5GfoDJPWUjxCfmiym6oOHv6" className="hover:text-orange-600 font-medium">Superpet</Link></li>
-              <li><Link to="https://purina.com.pe/proplan/gatos" className="hover:text-orange-600 font-medium">Purina</Link></li>
-              <li><Link to="https://www.vega.pe/comida-para-gatos-ricocat-esterilizados-bolsa-9-kg-650288/p?srsltid=AfmBOopqSPSX2j3mosw85bveZDGvJ6eOIp148LjL_HHHom1EmSG-bCIM" className="hover:text-orange-600 font-medium">Ricocat</Link></li>
+              <li><Link to="/marcas/adopbrand" className="hover:text-orange-600 font-medium">AdopBrand</Link></li>
+              <li><Link to="/marcas/gatotop" className="hover:text-orange-600 font-medium">GatoTop</Link></li>
+              <li><Link to="/marcas/felinex" className="hover:text-orange-600 font-medium">Felinex</Link></li>
             </ul>
           </div>
         </aside>
@@ -71,59 +71,57 @@ const Catalog = () => {
             {products.length === 0 ? (
               <p className="text-sm text-gray-600">Cargando productos...</p>
             ) : (
-              products
-                .filter((product) => product.isActive) // ✅ Mostrar solo productos activos
-                .map((product) => {
-                  const finalPrice = product.price - (product.price * product.discountPct) / 100;
-                  const isInCart = items.some(item => item.product.productId === product.productId);
+              products.map((product) => {
+                const finalPrice = product.price - (product.price * product.discountPct) / 100;
+                const isInCart = items.some(item => item.product.productId === product.productId);
 
-                  return (
-                    <button
-                      key={product.productId}
-                      onClick={() => !isInCart && addToCart(product)}
-                      className="text-left"
-                    >
-                      <Card className="group flex flex-col items-center p-4 border-2 border-gray-200 hover:border-orange-400 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-[#1f1f1f]">
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="h-44 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                        />
+                return (
+                  <button
+                    key={product.productId}
+                    onClick={() => !isInCart && addToCart(product)}
+                    className="text-left"
+                  >
+                    <Card className="group flex flex-col items-center p-4 border-2 border-gray-200 hover:border-orange-400 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-[#1f1f1f]">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="h-44 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                      />
 
-                        <div className="mt-4 text-center space-y-2">
-                          <p className="text-[12px] font-semibold uppercase text-orange-400 tracking-wide">
-                            {product.categoryName}
-                          </p>
-                          <h3 className="font-bold text-base text-gray-800 dark:text-white">
-                            {product.name}
-                          </h3>
-                          <p className="text-lg text-orange-600 font-bold">
-                            S/. {finalPrice.toFixed(2)}
-                          </p>
+                      <div className="mt-4 text-center space-y-2">
+                        <p className="text-[12px] font-semibold uppercase text-orange-400 tracking-wide">
+                          {product.categoryName}
+                        </p>
+                        <h3 className="font-bold text-base text-gray-800 dark:text-white">
+                          {product.name}
+                        </h3>
+                        <p className="text-lg text-orange-600 font-bold">
+                          S/. {finalPrice.toFixed(2)}
+                        </p>
 
-                          {user?.role === "ROLE_ADOPTANTE" && (
-                            isInCart ? (
-                              <AdoptButton
-                                label="✅ Añadido"
-                                disabled
-                                fullWidth
-                                variant="secondary"
-                                className="mt-2"
-                              />
-                            ) : (
-                              <AdoptButton
-                                label="ADD +"
-                                fullWidth
-                                variant="primary"
-                                className="mt-2"
-                              />
-                            )
-                          )}
-                        </div>
-                      </Card>
-                    </button>
-                  );
-                })
+                        {user?.role === "ROLE_ADOPTANTE" && (
+                          isInCart ? (
+                            <AdoptButton
+                              label="✅ Añadido"
+                              disabled
+                              fullWidth
+                              variant="secondary"
+                              className="mt-2"
+                            />
+                          ) : (
+                            <AdoptButton
+                              label="ADD +"
+                              fullWidth
+                              variant="primary"
+                              className="mt-2"
+                            />
+                          )
+                        )}
+                      </div>
+                    </Card>
+                  </button>
+                );
+              })
             )}
           </div>
         </main>

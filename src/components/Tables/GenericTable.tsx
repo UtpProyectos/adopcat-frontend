@@ -1,8 +1,20 @@
+import React, { ReactNode, useMemo, useState, useCallback } from "react";
 import {
-  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button,
-  DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Input,
+  Button,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Chip,
+  Pagination,
 } from "@heroui/react";
-import { ReactNode, useMemo, useState, useCallback } from "react";
 import SearchIcon from "../IconsSvg/SearchIcon";
 import ChevronDownIcon from "../IconsSvg/ChevronDownIcon";
 
@@ -34,10 +46,12 @@ interface TableProps<T> {
   initialRowsPerPage?: number;
   button_label?: string;
   emptyMessage?: string;
-  onAddNew?: () => void;
+  onAddNew: () => void;
   showStatusFilter?: boolean;
-  statusColumnKey?: keyof T | string;
-  filterKeys?: (keyof T | string)[];
+
+  statusColumnKey?: keyof T | string; // Columna donde está el estado para filtro
+
+  filterKeys?: (keyof T | string)[]; // Columnas donde buscar texto en filtro
 }
 
 export function capitalize(s: string) {
@@ -54,8 +68,8 @@ export default function GenericTable<T extends Record<string, any>>({
   initialSort,
   rowsPerPageOptions = defaultRowsPerPageOptions,
   initialRowsPerPage = rowsPerPageOptions[0],
-  emptyMessage = "No hay datos disponibles.",
-  button_label = "Añadir nuevo",
+  emptyMessage = "No data available",
+  button_label = "Add New",
   onAddNew,
   showStatusFilter = false,
   statusColumnKey,
@@ -63,7 +77,11 @@ export default function GenericTable<T extends Record<string, any>>({
 }: TableProps<T>) {
   const [filterValue, setFilterValue] = useState("");
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(
-    new Set(initialVisibleColumns?.map(String) || columns.map((c) => String(c.uid)))
+    new Set(
+      (initialVisibleColumns
+        ? initialVisibleColumns.map((col) => String(col))
+        : columns.map((c) => String(c.uid)))
+    )
   );
   const [statusFilter, setStatusFilter] = useState<Set<string>>(new Set());
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
@@ -72,23 +90,30 @@ export default function GenericTable<T extends Record<string, any>>({
   );
   const [page, setPage] = useState(1);
 
+  // Filtrar columnas visibles
   const headerColumns = useMemo(() => {
     return columns.filter((col) => visibleColumns.has(String(col.uid)));
   }, [columns, visibleColumns]);
 
+  // Filtrar datos según texto y status con nuevas props
   const filteredData = useMemo(() => {
     let filtered = [...data];
 
-    if (filterValue.trim()) {
-      const keysToSearch = filterKeys?.map(String) || headerColumns.map((c) => String(c.uid));
+    if (filterValue.trim().length > 0) {
+      const keysToSearch = filterKeys && filterKeys.length > 0
+        ? filterKeys.map(String)
+        : headerColumns.map((c) => String(c.uid));
+
       filtered = filtered.filter((item) =>
         keysToSearch.some((key) =>
-          String(item[key] ?? "").toLowerCase().includes(filterValue.toLowerCase())
+          String(item[key] ?? "")
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
         )
       );
     }
 
-    if (showStatusFilter && statusFilter.size && statusColumnKey) {
+    if (showStatusFilter && statusFilter.size > 0 && statusColumnKey) {
       filtered = filtered.filter((item) =>
         statusFilter.has(String(item[statusColumnKey]))
       );
@@ -97,136 +122,238 @@ export default function GenericTable<T extends Record<string, any>>({
     return filtered;
   }, [data, filterValue, statusFilter, headerColumns, showStatusFilter, statusColumnKey, filterKeys]);
 
+  // Paginación
   const pages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
   const pagedData = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     return filteredData.slice(start, start + rowsPerPage);
   }, [filteredData, page, rowsPerPage]);
 
+  // Ordenar
   const sortedData = useMemo(() => {
+    if (!sortDescriptor.column) return pagedData;
+
     return [...pagedData].sort((a, b) => {
-      const aVal = a[sortDescriptor.column];
-      const bVal = b[sortDescriptor.column];
-      const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+      const first = a[sortDescriptor.column];
+      const second = b[sortDescriptor.column];
+      if (first == null) return -1;
+      if (second == null) return 1;
+
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [pagedData, sortDescriptor]);
 
+  // Renderizar celda
   const renderCell = useCallback(
     (item: T, column: Column<T>) => {
       if (column.render) return column.render(item);
+
+      if (column.uid === statusColumnKey && item[statusColumnKey]) {
+        const status = String(item[statusColumnKey]).toLowerCase();
+        const statusColorMap: Record<string, "success" | "danger" | "warning"> = {
+          active: "success",
+          paused: "danger",
+          vacation: "warning",
+        };
+        return (
+          <Chip color={statusColorMap[status] || "success"} size="sm" variant="flat">
+            {capitalize(String(item[statusColumnKey]))}
+          </Chip>
+        );
+      }
+
       return String(item[column.uid] ?? "");
     },
-    []
+    [statusColumnKey]
   );
+
+  // Handlers
+  const onSearchChange = (value: string) => {
+    setFilterValue(value);
+    setPage(1);
+  };
+
+  const onClearSearch = () => {
+    setFilterValue("");
+    setPage(1);
+  };
+
+  const onStatusFilterChange = (keys: any) => {
+    const selectedKeys =
+      keys instanceof Set ? keys : new Set(Array.from(keys as Iterable<string>));
+    setStatusFilter(selectedKeys);
+    setPage(1);
+  };
+
+  const onVisibleColumnsChange = (keys: any) => {
+    const selectedKeys =
+      keys instanceof Set ? keys : new Set(Array.from(keys as Iterable<string>));
+    setVisibleColumns(selectedKeys);
+  };
+
+  const onRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  };
+
+  // const onSortChange = (descriptor: SortDescriptor<T>) => {
+  //   setSortDescriptor(descriptor);
+  // };
+
+  const onPageChange = (newPage: number) => {
+    setPage(newPage);
+  };
 
   return (
-    <div className="w-full space-y-4">
-      {/* Top Controls */}
-      <div className="flex flex-wrap justify-between gap-3">
-        <Input
-          isClearable
-          className="max-w-sm"
-          placeholder="Buscar..."
-          value={filterValue}
-          onClear={() => setFilterValue("")}
-          onValueChange={(val) => setFilterValue(val)}
-          startContent={<SearchIcon />}
-        />
+    <>
 
-        <div className="flex gap-2">
-          {showStatusFilter && statusOptions.length > 0 && statusColumnKey && (
-            <Dropdown>
-              <DropdownTrigger>
-                <Button endContent={<ChevronDownIcon />} variant="flat">
-                  Estado
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                selectionMode="multiple"
-                selectedKeys={statusFilter}
-                onSelectionChange={(keys) => setStatusFilter(new Set(Array.from(keys) as string[]))}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid}>{capitalize(status.name)}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          )}
+      <div className="w-full flex flex-col gap-4 ">
+        {/* Controles arriba */}
+        <div className="flex flex-col gap-4 mb-4 ">
+          <div className="flex  gap-3 md:flex-row flex-col md:justify-between justify-center md:items-end  ">
+            <Input
+              isClearable
+              className="w-full sm:max-w-[44%]"
+              placeholder="Search..."
+              startContent={<SearchIcon />}
+              value={filterValue}
+              onClear={onClearSearch}
+              onValueChange={onSearchChange}
+            />
 
-          <Dropdown>
-            <DropdownTrigger>
-              <Button endContent={<ChevronDownIcon />} variant="flat">
-                Columnas
+            <div className="flex gap-1 md:flex-row flex-col">
+              {showStatusFilter && statusOptions.length > 0 && statusColumnKey && (
+                <Dropdown>
+                  <DropdownTrigger className=" sm:flex">
+                    <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                      Estado
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                
+                    aria-label="Status Filter"
+                    closeOnSelect={false}
+                    selectedKeys={statusFilter}
+                    selectionMode="multiple"
+                    onSelectionChange={onStatusFilterChange}
+                  >
+                    {statusOptions.map((status) => (
+                      <DropdownItem key={status.uid} className="capitalize">
+                        {capitalize(status.name)}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              )}
+
+              <Dropdown>
+                <DropdownTrigger className=" sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                    Columnas
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Table Columns"
+                  closeOnSelect={false}
+                  selectedKeys={visibleColumns}
+                  selectionMode="multiple"
+                  onSelectionChange={onVisibleColumnsChange}
+                >
+                  {columns.map((column) => (
+                    <DropdownItem key={String(column.uid)} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+
+              <Button color="primary" onPress={onAddNew}>
+               {button_label}
               </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              selectionMode="multiple"
-              selectedKeys={visibleColumns}
-              onSelectionChange={(keys) => setVisibleColumns(new Set(Array.from(keys) as string[]))}
-            >
-              {columns.map((col) => (
-                <DropdownItem key={String(col.uid)}>{capitalize(col.name)}</DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+            </div>
+          </div>
 
-          {onAddNew && (
-            <Button color="primary" onPress={onAddNew}>
-              {button_label}
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-neutral-700">
-        <Table
-          aria-label="Generic Table"
-          sortDescriptor={{ column: String(sortDescriptor.column), direction: sortDescriptor.direction }}
-          onSortChange={(d: any) =>
-            setSortDescriptor({ column: d.column as keyof T, direction: d.direction })
-          }
-        >
-          <TableHeader columns={headerColumns}>
-            {(col) => (
-              <TableColumn
-                key={String(col.uid)}
-                allowsSorting={col.sortable}
-                align={col.align || (col.uid === "actions" ? "center" : "start")}
+          <div className="flex justify-between items-center gap-3">
+            <span className="text-default-400 text-small">Total {data.length} items</span>
+            <label className="flex items-center text-default-400 text-small gap-2">
+              Filas por pagina:
+              <select
+                className="bg-transparent outline-none text-default-400 text-small"
+                onChange={onRowsPerPageChange}
+                value={rowsPerPage}
               >
-                {col.name}
-              </TableColumn>
-            )}
-          </TableHeader>
+                {rowsPerPageOptions.map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
 
-          <TableBody items={sortedData} emptyContent={emptyMessage}>
-            {(item) => (
-              <TableRow key={String(item[columns[0].uid])}>
-                {(colKey) => {
-                  const col = columns.find((c) => String(c.uid) === colKey);
-                  return <TableCell>{col ? renderCell(item, col) : null}</TableCell>;
-                }}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+        {/* Tabla */}
+        <div className="p-1 ">
+          <Table
+            isHeaderSticky
+            aria-label="Custom Table"
+            classNames={{
+              wrapper: "overflow rounded-4xl bg-body dark:bg-dark",
+            }}
+            sortDescriptor={{
+              ...sortDescriptor,
+              column: String(sortDescriptor.column),
+            }}
+            onSortChange={(descriptor: any) => {
+              setSortDescriptor({
+                ...descriptor,
+                column: descriptor.column as keyof T,
+              });
+            }}
+          >
+            <TableHeader columns={headerColumns}>
+              {(column) => (
+                <TableColumn
+                  key={String(column.uid)}
+                  align={column.align || (column.uid === "actions" ? "center" : "start")}
+                  allowsSorting={column.sortable}
+                >
+                  {column.name}
+                </TableColumn>
+              )}
+            </TableHeader>
 
-      {/* Pagination */}
-      <div className="flex justify-between items-center px-2">
-        <span className="text-sm text-default-400">Total {filteredData.length} items</span>
-        <Pagination
-          showControls
-          page={page}
-          total={pages}
-          onChange={(newPage) => setPage(newPage)}
-          color="primary"
-          isCompact
-          showShadow
-        />
+            <TableBody emptyContent={emptyMessage} items={sortedData}>
+              {(item) => (
+                <TableRow key={String(item[columns[0].uid])}>
+                  {(columnKey) => {
+                    const col = columns.find((c) => c.uid === columnKey);
+                    return <TableCell>{col ? renderCell(item, col) : null}</TableCell>;
+                  }}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+        </div>
+
+        {/* Paginación */}
+        <div className="py-2 px-2 flex justify-between items-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={page}
+            total={pages}
+            onChange={onPageChange}
+          />
+        </div>
+
       </div>
-    </div>
+    </>
   );
 }
+

@@ -25,15 +25,16 @@ import SheltersModule from "../pages/global/Shelters"
 import CurvedRoadTimeline from "../pages/global/Adoption/Progress"
 import OrganizationCatsPage from "../pages/organization/Cats"
 import Donaciones from "../pages/global/Donaciones/Donaciones"
-import Planes from "../pages/global/Planes/Planes"
+import Planes from "../pages/global/Planes/Planes" 
+import OrganizationAdoptionsPage from "@/pages/organization/Adoption"
+import AdminPanel from '../pages/admin/StoreAdmin/AdminPanel';
+import CategoryForm from '../pages/admin/StoreAdmin/CategoryForm';
+import StoreAdmin from "../pages/admin/StoreAdmin/";
+import SupplierForm  from "../pages/admin/StoreAdmin/SupplierForm";
+import OrganizationMembersPage from "@/pages/organization/Members"
 import Catalog from "../pages/global/OnlineStore/Catalog"
 import CartPage from "../pages/global/OnlineStore/CartPage"
 import CheckoutPage from "../pages/global/OnlineStore/CheckoutPage"
-import GraciasPage from "../pages/global/OnlineStore/GraciasPage"
-import ProductsAdminPage from "../pages/admin/StoreAdmin/ProductsAdminPage"; // 👈 importa esto
-import OrganizationAdoptionsPage from "@/pages/organization/Adoption"
-import OrganizationMembersPage from "@/pages/organization/Members"
-
 
 const AppRouter = () => {
   const { initialized } = useAuth()
@@ -74,10 +75,11 @@ const AppRouter = () => {
            <Route path="/tienda" element={<Catalog />} />
             <Route path="/carrito" element={<CartPage />} />
              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/gracias" element={<GraciasPage />} />
-           
-          
-            
+           <Route path="/admin" element={<AdminPanel />} />
+           <Route path="/admin/tienda" element={<StoreAdmin />} />
+           <Route path="/admin/categorias" element={<CategoryForm />} />
+           <Route path="/admin/proveedores" element={<SupplierForm />} />
+
           
           {/* Ruta protegida solo para usuarios logueados */}
           <Route element={<PrivateRoute />}>
@@ -104,8 +106,7 @@ const AppRouter = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<UsersPage />} />
-            <Route path="organizaciones" element={<OrganizationsAdminPage />} />
-             <Route path="tienda" element={<ProductsAdminPage />} /> 
+            <Route path="organizaciones" element={<OrganizationsAdminPage />} /> 
           </Route>
         </Route>
 
